@@ -13,6 +13,13 @@ public class User {
     
     //Permission, World
     private HashMap<Permission, String> permissions = new HashMap();
+    
+    //Key, Value
+    private HashMap<String, String> vars = new HashMap();
+
+    public HashMap<String, String> getVars() {
+        return vars;
+    }
 
     public HashMap<Permission, String> getPermissions() {
         return permissions;

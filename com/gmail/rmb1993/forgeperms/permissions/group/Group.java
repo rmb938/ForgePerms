@@ -10,6 +10,8 @@ import java.util.HashMap;
 public class Group {
 
     private String groupName;
+    private int rank;
+    private Track track;
     
     //Permission, World
     private HashMap<Permission, String> permissions = new HashMap();

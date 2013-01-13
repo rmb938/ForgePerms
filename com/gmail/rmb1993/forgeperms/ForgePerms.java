@@ -1,5 +1,9 @@
 package com.gmail.rmb1993.forgeperms;
 
+import com.gmail.rmb1993.forgeperms.database.DataBase;
+import com.gmail.rmb1993.forgeperms.database.FlatFileDataBase;
+import com.gmail.rmb1993.forgeperms.database.MySQLDataBase;
+import com.gmail.rmb1993.forgeperms.database.SQLLiteDataBase;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -10,12 +14,9 @@ import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.relauncher.ReflectionHelper;
-import cpw.mods.fml.relauncher.RelaunchClassLoader;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.net.MalformedURLException;
-import java.net.URLClassLoader;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 
@@ -32,26 +33,46 @@ public class ForgePerms {
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println("Forge Perms Loaded");
-        
+
         Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-        
+
         config.load();
-        
+
         config.addCustomCategoryComment("Database", "This is a database config :D");
-        Property mysql = config.get("Database", "MySQL", true);
+        Property mysql = config.get("Database", "MySQL", false);
         Property sqlLite = config.get("Database", "SQLLite", false);
-        Property flatFile = config.get("Database", "FlatFile", false);
-        
+        Property flatFile = config.get("Database", "FlatFile", true);
+
         config.save();
-        
+
+        DataBase db;
+
         File mcDir = computeExistingClientHome();
         File libDir = null;
-        try {
-            libDir = setupLibDir(mcDir);
-        } catch (Exception ex) {
-            ex.printStackTrace();
+
+        if (mysql.getBoolean(false) == true) {
+            System.out.println("Using MySQL");
+            db = new MySQLDataBase();
+
+            try {
+                libDir = setupLibDir(mcDir);
+            } catch (Exception ex) {
+                ex.printStackTrace();
+            }
+            File libFile = new File(libDir, "commons-dbutils-1.5.jar");//MySQL Library
+            if (libFile.exists() == false) {
+                System.out.println("You do not have the mySQL library installed. Switching to flatFile");
+                mysql.value = "False";
+            }
         }
-        File libFile = new File(libDir, "commons-dbutils-1.5.jar");//MySQL Library
+        if (sqlLite.getBoolean(false) == true) {
+            db = new SQLLiteDataBase();
+        }
+
+        if (flatFile.getBoolean(true) == true) {
+            db = new FlatFileDataBase();
+        }
+
     }
 
     /**
