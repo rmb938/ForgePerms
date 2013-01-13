@@ -1,6 +1,9 @@
 package com.gmail.rmb1993.forgeperms;
 
 import com.gmail.rmb1993.forgeperms.database.DataBase;
+import com.gmail.rmb1993.forgeperms.database.FlatFileDataBase;
+import com.gmail.rmb1993.forgeperms.database.MySQLDataBase;
+import com.gmail.rmb1993.forgeperms.database.SQLLiteDataBase;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -46,7 +49,7 @@ public class ForgePerms {
 
         if (mysql.getBoolean(false) == true) {
             System.out.println("Using MySQL");
-            //db = new MySQLDataBase();
+            db = new MySQLDataBase();
 
             try {
                 libDir = setupLibDir(mcDir);
@@ -61,12 +64,13 @@ public class ForgePerms {
             }
         }
         if (sqlLite.getBoolean(false) == true) {
-            //db = new SQLLiteDataBase();
+            System.out.println("Using SQL Lite");
+            db = new SQLLiteDataBase();
         }
 
         if (flatFile.getBoolean(true) == true) {
             System.out.println("Using Flat File");
-            //db = new FlatFileDataBase();
+            db = new FlatFileDataBase();
         }
 
         config.save();
