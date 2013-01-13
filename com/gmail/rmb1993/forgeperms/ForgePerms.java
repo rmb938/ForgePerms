@@ -35,12 +35,9 @@ public class ForgePerms {
 
         config.load();
 
-        config.addCustomCategoryComment("Database", "This is a database config :D");
         Property mysql = config.get("Database", "MySQL", false);
         Property sqlLite = config.get("Database", "SQLLite", false);
         Property flatFile = config.get("Database", "FlatFile", true);
-
-        config.save();
 
         DataBase db;
 
@@ -59,7 +56,8 @@ public class ForgePerms {
             File libFile = new File(libDir, "commons-dbutils-1.5.jar");//MySQL Library
             if (libFile.exists() == false) {
                 System.out.println("You do not have the mySQL library installed. Switching to flatFile");
-                mysql.value = "False";
+                mysql.value = "false";
+                flatFile.value = "true";
             }
         }
         if (sqlLite.getBoolean(false) == true) {
@@ -67,9 +65,12 @@ public class ForgePerms {
         }
 
         if (flatFile.getBoolean(true) == true) {
+            System.out.println("Using Flat File");
             //db = new FlatFileDataBase();
         }
 
+        config.save();
+        
     }
 
     /**
