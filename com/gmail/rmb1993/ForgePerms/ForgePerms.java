@@ -1,6 +1,5 @@
 package com.gmail.rmb1993.ForgePerms;
 
-import cpw.mods.fml.common.CertificateHelper;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -10,21 +9,19 @@ import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.relauncher.FMLRelaunchLog;
 import cpw.mods.fml.relauncher.ReflectionHelper;
 import cpw.mods.fml.relauncher.RelaunchClassLoader;
-import java.io.*;
+import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.net.URLClassLoader;
-import java.net.URLConnection;
-import java.nio.ByteBuffer;
+import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 
 //////////////////
 // Date: 1/12/2013
 //////////////////
-
 @NetworkMod(clientSideRequired = false, serverSideRequired = false)
 @Mod(modid = "ForgePerms", name = "Forge Permissions", version = "0.1")
 public class ForgePerms {
@@ -35,6 +32,18 @@ public class ForgePerms {
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
         System.out.println("Forge Perms Loaded");
+        
+        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
+        
+        config.load();
+        
+        config.addCustomCategoryComment("Database", "This is a database config :D");
+        Property mysql = config.get("Database", "MySQL", true);
+        Property sqlLite = config.get("Database", "SQLLite", false);
+        Property flatFile = config.get("Database", "FlatFile", false);
+        
+        config.save();
+        
         File mcDir = computeExistingClientHome();
         File libDir = null;
         try {
@@ -43,20 +52,12 @@ public class ForgePerms {
             ex.printStackTrace();
         }
         File libFile = new File(libDir, "commons-dbutils-1.5.jar");
-        if (libFile.exists() == false) {
-            System.out.println("Need to download!");
-        }
-        
+
         URLClassLoader ucl = (URLClassLoader) getClass().getClassLoader();
         RelaunchClassLoader actualClassLoader = new RelaunchClassLoader(ucl.getURLs());
         try {
             actualClassLoader.addURL(libFile.toURI().toURL());
         } catch (MalformedURLException ex) {
-            ex.printStackTrace();
-        }
-        try {
-            Class qr = Class.forName("org.apache.commons.dbutils.QueryRunner");
-        } catch (ClassNotFoundException ex) {
             ex.printStackTrace();
         }
     }
