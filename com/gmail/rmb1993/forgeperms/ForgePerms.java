@@ -1,7 +1,7 @@
 package com.gmail.rmb1993.forgeperms;
 
 import com.gmail.rmb1993.forgeperms.config.Configuration;
-import com.gmail.rmb1993.forgeperms.permissions.PermissionType;
+import com.gmail.rmb1993.forgeperms.permissions.Permission;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.group.Track;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
@@ -14,10 +14,6 @@ import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.relauncher.ReflectionHelper;
-import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -35,6 +31,7 @@ public class ForgePerms {
     
     public HashMap<String, User> users = new HashMap();
     public HashMap<String, Group> groups = new HashMap();
+    public HashMap<String, Permission> permissions = new HashMap();
     public ArrayList<Track> tracks = new ArrayList();
     
     @PreInit

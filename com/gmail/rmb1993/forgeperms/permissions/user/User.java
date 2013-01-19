@@ -1,6 +1,7 @@
 package com.gmail.rmb1993.forgeperms.permissions.user;
 
 import com.gmail.rmb1993.forgeperms.permissions.Permission;
+import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import java.util.HashMap;
 
 /**
@@ -13,6 +14,13 @@ public class User {
     
     //Permission, World
     private HashMap<Permission, String> permissions = new HashMap();
+    
+    //Group, GroupName
+    private HashMap<Group, String> groups = new HashMap();
+
+    public HashMap<Group, String> getGroups() {
+        return groups;
+    }
     
     //Key, Value
     private HashMap<String, String> vars = new HashMap();

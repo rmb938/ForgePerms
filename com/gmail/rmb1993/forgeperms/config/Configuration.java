@@ -15,6 +15,15 @@ public class Configuration {
     private boolean global;
     private boolean messagePromote;
     private DataBase db;
+    private String defaultGroup;
+
+    public String getDefaultGroup() {
+        return defaultGroup;
+    }
+
+    public void setDefaultGroup(String defaultGroup) {
+        this.defaultGroup = defaultGroup;
+    }
 
     public DataBase getDb() {
         return db;
@@ -52,6 +61,7 @@ public class Configuration {
         
         global = config.get("Permission Setup", "global", true).getBoolean(true);
         messagePromote = config.get("Permission Setup", "messageOnPromote", true).getBoolean(false);
+        defaultGroup = config.get("Permissions Setup", "defaultGroup", "default").value;
         
         if (global == true) {
             System.out.println("Using global permissions");
@@ -89,6 +99,10 @@ public class Configuration {
         }
 
         config.save();
+        //loads groups
+        if (db.loadGroup(defaultGroup) == null) {
+            db.createGroup(defaultGroup);
+        }
     }
     
     /**

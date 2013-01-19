@@ -15,6 +15,20 @@ public class Group {
     
     //Permission, World
     private HashMap<Permission, String> permissions = new HashMap();
+    
+    //Key, Value
+    private HashMap<String, String> vars = new HashMap();
+
+    public HashMap<String, String> getVars() {
+        return vars;
+    }
+    
+    //Group, GroupName
+    private HashMap<Group, String> groups = new HashMap();
+
+    public HashMap<Group, String> getGroups() {
+        return groups;
+    }
 
     public HashMap<Permission, String> getPermissions() {
         return permissions;
