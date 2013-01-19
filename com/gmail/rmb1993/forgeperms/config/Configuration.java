@@ -4,10 +4,7 @@ import com.gmail.rmb1993.forgeperms.database.DataBase;
 import com.gmail.rmb1993.forgeperms.database.FlatFileDataBase;
 import com.gmail.rmb1993.forgeperms.database.MySQLDataBase;
 import com.gmail.rmb1993.forgeperms.database.SQLLiteDataBase;
-import cpw.mods.fml.relauncher.ReflectionHelper;
 import java.io.File;
-import java.io.IOException;
-import java.lang.reflect.Method;
 import net.minecraftforge.common.Property;
 
 public class Configuration {
