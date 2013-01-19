@@ -84,6 +84,7 @@ public class Configuration {
         //loads groups
         if (db.loadGroup(defaultGroup) == null) {
             db.createGroup(defaultGroup);
+            db.loadGroup(defaultGroup);
         }
     }
     

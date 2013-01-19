@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms;
 
+import com.gmail.rmb1993.forgeperms.commands.override.Kick;
 import com.gmail.rmb1993.forgeperms.config.Configuration;
 import com.gmail.rmb1993.forgeperms.permissions.Permission;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
@@ -16,6 +17,10 @@ import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import java.util.ArrayList;
 import java.util.HashMap;
+import net.minecraft.command.ICommandManager;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.src.ModLoader;
 
 //////////////////
 // Date: 1/12/2013
@@ -39,9 +44,13 @@ public class ForgePerms {
         instance = this;
         System.out.println("Forge Perms Loaded");
         config = new Configuration();
+        
+        Permission perm = new Permission();
+        perm.setPermission("test.permission");
+        permissions.put("test.permission", perm);
+        
         config.setUpConfig(event.getModConfigurationDirectory());
-        config.getDb().createUser("dfgdfgd");
-        config.getDb().loadUser("dfgdfgd");
+        config.getDb().loadUser("rmb");
     }
     @Init
     public void load(FMLInitializationEvent e) {
@@ -53,6 +62,10 @@ public class ForgePerms {
 
     @ServerStarting
     public void serverStarting(FMLServerStartingEvent e) {
+        MinecraftServer server = ModLoader.getMinecraftServerInstance();
+        ICommandManager commandManager = server.getCommandManager();
+        ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager); 
+        serverCommandManager.registerCommand(new Kick());
     }
 
     @ServerStopping

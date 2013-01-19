@@ -29,7 +29,7 @@ public class FlatFileDataBase extends DataBase {
         if (global == true) {
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/users.cfg"));
             config.load();
-            config.get(userName, "groups", new String[]{"testGroup"}, "The groups for the user");
+            config.get(userName, "groups", new String[]{"default"}, "The groups for the user");
             config.get(userName, "permissions", new String[]{"test.permission"}, "The permissions for the user");
             config.save();
         }
@@ -57,8 +57,8 @@ public class FlatFileDataBase extends DataBase {
                         }
                     } else if (key.equalsIgnoreCase("permissions")) {
                         for (String perm : cc.get("permissions").valueList) {
-                            System.out.println("Added " + perm + " to " + userName);
                             u.getPermissions().put(ForgePerms.instance.permissions.get(perm), "global");
+                            System.out.println("Added " + ForgePerms.instance.permissions.get(perm).getPermission() + " to " + userName);
                         }
                     } else {
                         u.getVars().put(key, cc.get(key).value);
@@ -104,7 +104,7 @@ public class FlatFileDataBase extends DataBase {
         if (global == true) {
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/groups.cfg"));
             config.load();
-            config.get(groupName, "inherit", new String[]{"testGroup"}, "Groups inherrited by this group");
+            config.get(groupName, "inherit", new String[]{"default"}, "Groups inherrited by this group");
             config.get(groupName, "permissions", new String[]{"test.permission"}, "The permissions for the group");
             config.save();
         }
@@ -138,8 +138,9 @@ public class FlatFileDataBase extends DataBase {
                             }
                         } else if (key.equalsIgnoreCase("permissions")) {
                             for (String perm : cc.get("permissions").valueList) {
-                                System.out.println("Added " + perm + " to " + groupName);
                                 g.getPermissions().put(ForgePerms.instance.permissions.get(perm), "global");
+                                System.out.println("Permission: "+perm);
+                                System.out.println("Added " + ForgePerms.instance.permissions.get(perm).getPermission() + " to " + groupName);
                             }
                         } else {
                             g.getVars().put(key, cc.get(key).value);
