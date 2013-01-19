@@ -1,9 +1,10 @@
 package com.gmail.rmb1993.forgeperms;
 
-import com.gmail.rmb1993.forgeperms.database.DataBase;
-import com.gmail.rmb1993.forgeperms.database.FlatFileDataBase;
-import com.gmail.rmb1993.forgeperms.database.MySQLDataBase;
-import com.gmail.rmb1993.forgeperms.database.SQLLiteDataBase;
+import com.gmail.rmb1993.forgeperms.config.Configuration;
+import com.gmail.rmb1993.forgeperms.permissions.PermissionType;
+import com.gmail.rmb1993.forgeperms.permissions.group.Group;
+import com.gmail.rmb1993.forgeperms.permissions.group.Track;
+import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.Init;
 import cpw.mods.fml.common.Mod.Instance;
@@ -17,8 +18,8 @@ import cpw.mods.fml.relauncher.ReflectionHelper;
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Method;
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 //////////////////
 // Date: 1/12/2013
@@ -29,97 +30,20 @@ public class ForgePerms {
 
     @Instance(value = "ForgePerms")
     public static ForgePerms instance;
-
+    
+    public Configuration config;
+    
+    public HashMap<String, User> users = new HashMap();
+    public HashMap<String, Group> groups = new HashMap();
+    public ArrayList<Track> tracks = new ArrayList();
+    
     @PreInit
     public void preInit(FMLPreInitializationEvent event) {
+        instance = this;
         System.out.println("Forge Perms Loaded");
-
-        Configuration config = new Configuration(event.getSuggestedConfigurationFile());
-
-        config.load();
-
-        Property mysql = config.get("Database", "MySQL", false);
-        Property sqlLite = config.get("Database", "SQLLite", false);
-        Property flatFile = config.get("Database", "FlatFile", true);
-
-        DataBase db;
-
-        File mcDir = computeExistingClientHome();
-        File libDir = null;
-
-        if (mysql.getBoolean(false) == true) {
-            System.out.println("Using MySQL");
-            db = new MySQLDataBase();
-
-            try {
-                libDir = setupLibDir(mcDir);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            File libFile = new File(libDir, "commons-dbutils-1.5.jar");//MySQL Library
-            if (libFile.exists() == false) {
-                System.out.println("You do not have the mySQL library installed. Switching to flatFile");
-                mysql.value = "false";
-                flatFile.value = "true";
-            }
-        }
-        if (sqlLite.getBoolean(false) == true) {
-            System.out.println("Using SQL Lite");
-            db = new SQLLiteDataBase();
-        }
-
-        if (flatFile.getBoolean(true) == true) {
-            System.out.println("Using Flat File");
-            db = new FlatFileDataBase();
-        }
-
-        config.save();
-        
+        config = new Configuration();
+        config.setUpConfig(event.getModConfigurationDirectory());
     }
-
-    /**
-     * @return
-     */
-    private File computeExistingClientHome() {
-        Class<? super Object> mcMaster = ReflectionHelper.getClass(getClass().getClassLoader(), "net.minecraft.client.Minecraft");
-        // If we get the system property we inject into the old MC, setup the
-        // dir, then pull the value
-        String str = System.getProperty("minecraft.applet.TargetDirectory");
-        if (str != null) {
-            str = str.replace('/', File.separatorChar);
-            ReflectionHelper.setPrivateValue(mcMaster, null, new File(str), "minecraftDir", "an", "minecraftDir");
-        }
-        // We force minecraft to setup it's homedir very early on so we can
-        // inject stuff into it
-        Method setupHome = ReflectionHelper.findMethod(mcMaster, null, new String[]{"getMinecraftDir", "getMinecraftDir", "b"});
-        try {
-            setupHome.invoke(null);
-        } catch (Exception e) {
-            // Hmmm
-        }
-        File minecraftHome = ReflectionHelper.getPrivateValue(mcMaster, null, "minecraftDir", "an", "minecraftDir");
-        return minecraftHome;
-    }
-
-    /**
-     * @param mcDir
-     * @return
-     */
-    private static File setupLibDir(File mcDir) {
-        File libDir = new File(mcDir, "mods");
-        try {
-            libDir = libDir.getCanonicalFile();
-        } catch (IOException e) {
-            throw new RuntimeException(String.format("Unable to canonicalize the mods dir at %s", mcDir.getName()), e);
-        }
-        if (!libDir.exists()) {
-            libDir.mkdir();
-        } else if (libDir.exists() && !libDir.isDirectory()) {
-            throw new RuntimeException(String.format("Found a mods file in %s that's not a directory", mcDir.getName()));
-        }
-        return libDir;
-    }
-
     @Init
     public void load(FMLInitializationEvent e) {
     }
