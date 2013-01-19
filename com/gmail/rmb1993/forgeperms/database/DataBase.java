@@ -17,6 +17,8 @@ public abstract class DataBase {
     
     public abstract void createGroup(String groupName);
     
+    public abstract void loadGroups();
+    
     public abstract Group loadGroup(String groupName);
     
     public abstract void saveGroup(String groupName);
