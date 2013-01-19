@@ -30,6 +30,11 @@ public class MySQLDataBase extends DataBase {
     }
     
     @Override
+    public void loadGroups() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    @Override
     public Group loadGroup(String groupName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }

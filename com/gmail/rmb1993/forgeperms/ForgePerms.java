@@ -40,6 +40,8 @@ public class ForgePerms {
         System.out.println("Forge Perms Loaded");
         config = new Configuration();
         config.setUpConfig(event.getModConfigurationDirectory());
+        config.getDb().createUser("dfgdfgd");
+        config.getDb().loadUser("dfgdfgd");
     }
     @Init
     public void load(FMLInitializationEvent e) {

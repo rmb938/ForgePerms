@@ -80,21 +80,21 @@ public class FlatFileDataBase extends DataBase {
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/users.cfg"));
 
             config.load();
-            
+
             ConfigCategory cc = config.getCategory(userName);
             User u = loadUser(userName);
-            
+
             String[] groups = (String[]) u.getGroups().values().toArray();
             cc.get("groups").valueList = groups;
-            
+
             String[] perms = (String[]) u.getPermissions().values().toArray();
             cc.get("permissions").valueList = perms;
-            
+
             for (String key : u.getVars().keySet()) {
                 String value = u.getVars().get(key);
                 cc.get(key).value = value;
             }
-            
+
             config.save();
         }
     }
@@ -104,10 +104,15 @@ public class FlatFileDataBase extends DataBase {
         if (global == true) {
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/groups.cfg"));
             config.load();
-            config.get(groupName, "groups", new String[]{"testGroup"}, "Groups inherrited by this group");
+            config.get(groupName, "inherit", new String[]{"testGroup"}, "Groups inherrited by this group");
             config.get(groupName, "permissions", new String[]{"test.permission"}, "The permissions for the group");
             config.save();
         }
+    }
+
+    @Override
+    public void loadGroups() {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
@@ -126,7 +131,12 @@ public class FlatFileDataBase extends DataBase {
                     Group g = new Group();
                     g.setGroupName(groupName);
                     for (String key : cc.keySet()) {
-                        if (key.equalsIgnoreCase("permissions")) {
+                        if (key.equalsIgnoreCase("inherit")) {
+                            for (String group : cc.get("inherit").valueList) {
+                                System.out.println("Added " + group + " to " + groupName);
+                                g.getGroups().put(ForgePerms.instance.groups.get(group), group);
+                            }
+                        } else if (key.equalsIgnoreCase("permissions")) {
                             for (String perm : cc.get("permissions").valueList) {
                                 System.out.println("Added " + perm + " to " + groupName);
                                 g.getPermissions().put(ForgePerms.instance.permissions.get(perm), "global");
@@ -149,21 +159,21 @@ public class FlatFileDataBase extends DataBase {
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/groups.cfg"));
 
             config.load();
-            
+
             ConfigCategory cc = config.getCategory(groupName);
             Group g = loadGroup(groupName);
-            
+
             String[] groups = (String[]) g.getGroups().values().toArray();
-            cc.get("groups").valueList = groups;
-            
+            cc.get("inherit").valueList = groups;
+
             String[] perms = (String[]) g.getPermissions().values().toArray();
             cc.get("permissions").valueList = perms;
-            
+
             for (String key : g.getVars().keySet()) {
                 String value = g.getVars().get(key);
                 cc.get(key).value = value;
             }
-            
+
             config.save();
         }
     }
@@ -172,25 +182,25 @@ public class FlatFileDataBase extends DataBase {
     public void removeGroup(String groupName) {
         net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/groups.cfg"));
 
-            config.load();
-            
-            config.categories.remove(groupName);
-            Group g = loadGroup(groupName);
-            for (Group g1 : ForgePerms.instance.groups.values()) {
-                if (g1.getGroups().containsKey(g)) {
-                    g1.getGroups().remove(g);
-                }
+        config.load();
+
+        config.categories.remove(groupName);
+        Group g = loadGroup(groupName);
+        for (Group g1 : ForgePerms.instance.groups.values()) {
+            if (g1.getGroups().containsKey(g)) {
+                g1.getGroups().remove(g);
             }
-            for (User u : ForgePerms.instance.users.values()) {
-                if (u.getGroups().containsKey(g)) {
-                    u.getGroups().remove(g);
-                }
-                if (u.getGroups().size() == 0) {
-                    u.getGroups().put(loadGroup(ForgePerms.instance.config.getDefaultGroup()), ForgePerms.instance.config.getDefaultGroup());
-                }
+        }
+        for (User u : ForgePerms.instance.users.values()) {
+            if (u.getGroups().containsKey(g)) {
+                u.getGroups().remove(g);
             }
-            ForgePerms.instance.groups.remove(groupName);
-            
-            config.save();
+            if (u.getGroups().isEmpty()) {
+                u.getGroups().put(loadGroup(ForgePerms.instance.config.getDefaultGroup()), ForgePerms.instance.config.getDefaultGroup());
+            }
+        }
+        ForgePerms.instance.groups.remove(groupName);
+
+        config.save();
     }
 }

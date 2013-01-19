@@ -69,24 +69,9 @@ public class Configuration {
             System.out.println("Using per world permissions");
         }
 
-        File mcDir = computeExistingClientHome();
-        File libDir = null;
-
         if (mysql.getBoolean(false) == true) {
             System.out.println("Using MySQL");
             db = new MySQLDataBase();
-
-            try {
-                libDir = setupLibDir(mcDir);
-            } catch (Exception ex) {
-                ex.printStackTrace();
-            }
-            File libFile = new File(libDir, "commons-dbutils-1.5.jar");//MySQL Library
-            if (libFile.exists() == false) {
-                System.out.println("You do not have the mySQL library installed. Switching to flatFile");
-                mysql.value = "false";
-                flatFile.value = "true";
-            }
         }
         if (sqlLite.getBoolean(false) == true) {
             System.out.println("Using SQL Lite");
@@ -103,49 +88,6 @@ public class Configuration {
         if (db.loadGroup(defaultGroup) == null) {
             db.createGroup(defaultGroup);
         }
-    }
-    
-    /**
-     * @return
-     */
-    private File computeExistingClientHome() {
-        Class<? super Object> mcMaster = ReflectionHelper.getClass(getClass().getClassLoader(), "net.minecraft.client.Minecraft");
-        // If we get the system property we inject into the old MC, setup the
-        // dir, then pull the value
-        String str = System.getProperty("minecraft.applet.TargetDirectory");
-        if (str != null) {
-            str = str.replace('/', File.separatorChar);
-            ReflectionHelper.setPrivateValue(mcMaster, null, new File(str), "minecraftDir", "an", "minecraftDir");
-        }
-        // We force minecraft to setup it's homedir very early on so we can
-        // inject stuff into it
-        Method setupHome = ReflectionHelper.findMethod(mcMaster, null, new String[]{"getMinecraftDir", "getMinecraftDir", "b"});
-        try {
-            setupHome.invoke(null);
-        } catch (Exception e) {
-            // Hmmm
-        }
-        File minecraftHome = ReflectionHelper.getPrivateValue(mcMaster, null, "minecraftDir", "an", "minecraftDir");
-        return minecraftHome;
-    }
-
-    /**
-     * @param mcDir
-     * @return
-     */
-    private static File setupLibDir(File mcDir) {
-        File libDir = new File(mcDir, "mods");
-        try {
-            libDir = libDir.getCanonicalFile();
-        } catch (IOException e) {
-            throw new RuntimeException(String.format("Unable to canonicalize the mods dir at %s", mcDir.getName()), e);
-        }
-        if (!libDir.exists()) {
-            libDir.mkdir();
-        } else if (libDir.exists() && !libDir.isDirectory()) {
-            throw new RuntimeException(String.format("Found a mods file in %s that's not a directory", mcDir.getName()));
-        }
-        return libDir;
     }
     
 }
