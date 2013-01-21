@@ -1,7 +1,10 @@
 package com.gmail.rmb1993.forgeperms;
 
+import com.gmail.rmb1993.forgeperms.commands.GroupCommand;
+import com.gmail.rmb1993.forgeperms.commands.UserCommand;
 import com.gmail.rmb1993.forgeperms.commands.override.*;
 import com.gmail.rmb1993.forgeperms.config.Configuration;
+import com.gmail.rmb1993.forgeperms.event.PlayerTrackerHook;
 import com.gmail.rmb1993.forgeperms.permissions.Permission;
 import com.gmail.rmb1993.forgeperms.permissions.PermissionType;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
@@ -15,7 +18,7 @@ import cpw.mods.fml.common.Mod.PreInit;
 import cpw.mods.fml.common.Mod.ServerStarting;
 import cpw.mods.fml.common.Mod.ServerStopping;
 import cpw.mods.fml.common.event.*;
-import java.util.ArrayList;
+import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.HashMap;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
@@ -44,6 +47,8 @@ public class ForgePerms {
         
         loadVanillaPerms();
         loadPermissionPerms();
+        
+        GameRegistry.registerPlayerTracker(new PlayerTrackerHook());
     }
     @Init
     public void load(FMLInitializationEvent e) {
@@ -140,7 +145,8 @@ public class ForgePerms {
     }
     
     public void loadPermissionCommands(ServerCommandManager serverCommandManager) {
-        
+        serverCommandManager.registerCommand(new UserCommand());
+        serverCommandManager.registerCommand(new GroupCommand());
     }
     
     @ServerStopping

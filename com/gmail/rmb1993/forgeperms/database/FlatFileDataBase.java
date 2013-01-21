@@ -6,6 +6,7 @@ import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.group.Track;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Map;
 import net.minecraftforge.common.ConfigCategory;
 
@@ -43,6 +44,12 @@ public class FlatFileDataBase extends DataBase {
             if (ForgePerms.instance.users.containsKey(userName)) {
                 return ForgePerms.instance.users.get(userName);
             }
+            if (userName.equalsIgnoreCase("server")) {
+                User u = new User();
+                u.setUserName(userName);
+                ForgePerms.instance.users.put(userName, u);
+                return loadUser(userName);
+            }
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/users.cfg"));
 
             config.load();
@@ -59,7 +66,9 @@ public class FlatFileDataBase extends DataBase {
                         }
                     } else if (key.equalsIgnoreCase("permissions")) {
                         for (String perm : cc.get("permissions").valueList) {
-                            u.getPermissions().put(perm, "global");
+                            ArrayList<String> world = new ArrayList();
+                            world.add("global");
+                            u.getPermissions().put(perm, world);
                         }
                     } else {
                         u.getVars().put(key, cc.get(key).value);
@@ -81,7 +90,7 @@ public class FlatFileDataBase extends DataBase {
             net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(new File(location + "/users.cfg"));
 
             config.load();
-
+            config.categories.remove(userName);
             ConfigCategory cc = config.getCategory(userName);
             User u = loadUser(userName);
 
@@ -153,7 +162,7 @@ public class FlatFileDataBase extends DataBase {
                                 ForgePerms.instance.tracks.put(cc.get("track").value, track);
                             }
                             Track track = ForgePerms.instance.tracks.get(cc.get("track").value);
-                            track.getGroups().add(g);
+                            track.addGroup(g);
                             g.setTrack(track);
                         } else {
                             g.getVars().put(key, cc.get(key).value);
@@ -177,8 +186,8 @@ public class FlatFileDataBase extends DataBase {
             ConfigCategory cc = config.getCategory(groupName);
             Group g = loadGroup(groupName);
 
-            cc.get("rank").value = ""+g.getRank();
-            
+            cc.get("rank").value = "" + g.getRank();
+
             String[] groups = (String[]) g.getGroups().toArray();
             cc.get("inherit").valueList = groups;
 

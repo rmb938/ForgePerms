@@ -3,10 +3,6 @@ package com.gmail.rmb1993.forgeperms.commands;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
 
-/**
- *
- * @author Ryan
- */
 public class GroupCommand extends CommandBase {
 
     @Override

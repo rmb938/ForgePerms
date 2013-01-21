@@ -4,6 +4,8 @@ import com.gmail.rmb1993.forgeperms.permissions.Permission;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -14,7 +16,7 @@ public class User {
     private String userName;
     
     //Permission, World(TBA)
-    private HashMap<String, String> permissions = new HashMap();
+    private HashMap<String, List<String>> permissions = new HashMap();
     
     //Group
     private ArrayList<Group> groups = new ArrayList();
@@ -30,7 +32,7 @@ public class User {
         return vars;
     }
 
-    public HashMap<String, String> getPermissions() {
+    public HashMap<String, List<String>> getPermissions() {
         return permissions;
     }
     

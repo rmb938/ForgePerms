@@ -11,6 +11,7 @@ import net.minecraft.src.ModLoader;
 public class ForgePermsAPI {
 
     public static boolean playerHasPermission(String playerName, String permission) {
+        permission = permission.toLowerCase();
         if (playerName.equalsIgnoreCase("server")) {
             return true;
         }
@@ -63,6 +64,7 @@ public class ForgePermsAPI {
     }
 
     public static boolean groupHasPermission(String groupName, String permission, boolean checkInherits) {
+        permission = permission.toLowerCase();
         Group g = ForgePerms.instance.config.getDb().loadGroup(groupName);
         if (g.getPermissions().containsKey(permission) == true) {
             return true;
