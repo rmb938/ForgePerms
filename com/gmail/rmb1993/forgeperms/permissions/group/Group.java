@@ -1,6 +1,7 @@
 package com.gmail.rmb1993.forgeperms.permissions.group;
 
 import com.gmail.rmb1993.forgeperms.permissions.Permission;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -12,9 +13,25 @@ public class Group {
     private String groupName;
     private int rank;
     private Track track;
+
+    public Track getTrack() {
+        return track;
+    }
+
+    public void setTrack(Track track) {
+        this.track = track;
+    }
+
+    public int getRank() {
+        return rank;
+    }
+
+    public void setRank(int rank) {
+        this.rank = rank;
+    }
     
-    //Permission, World
-    private HashMap<Permission, String> permissions = new HashMap();
+    //Permission, World(TBA)
+    private HashMap<String, String> permissions = new HashMap();
     
     //Key, Value
     private HashMap<String, String> vars = new HashMap();
@@ -23,14 +40,14 @@ public class Group {
         return vars;
     }
     
-    //Group, GroupName
-    private HashMap<Group, String> groups = new HashMap();
+    //Group
+    private ArrayList<Group> groups = new ArrayList();
 
-    public HashMap<Group, String> getGroups() {
+    public ArrayList<Group> getGroups() {
         return groups;
     }
 
-    public HashMap<Permission, String> getPermissions() {
+    public HashMap<String, String> getPermissions() {
         return permissions;
     }
 

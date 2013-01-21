@@ -52,11 +52,12 @@ public class Configuration {
 
         config.load();
 
-        Property mysql = config.get("Database", "MySQL", false);
-        Property sqlLite = config.get("Database", "SQLLite", false);
+        //Property mysql = config.get("Database", "MySQL", false);
+        //Property sqlLite = config.get("Database", "SQLLite", false);
         Property flatFile = config.get("Database", "FlatFile", true);
         
-        global = config.get("Permission Setup", "global", true).getBoolean(true);
+        //global = config.get("Permission Setup", "global", true).getBoolean(true);
+        global = true;
         messagePromote = config.get("Permission Setup", "messageOnPromote", true).getBoolean(false);
         defaultGroup = config.get("Permissions Setup", "defaultGroup", "default").value;
         
@@ -66,19 +67,20 @@ public class Configuration {
             System.out.println("Using per world permissions");
         }
 
-        if (mysql.getBoolean(false) == true) {
+        /*if (mysql.getBoolean(false) == true) {
             System.out.println("Using MySQL");
             db = new MySQLDataBase();
         }
         if (sqlLite.getBoolean(false) == true) {
             System.out.println("Using SQL Lite");
             db = new SQLLiteDataBase();
-        }
+        }*/
 
-        if (flatFile.getBoolean(true) == true) {
+        //if (flatFile.getBoolean(true) == true) {
+            flatFile.value = "true";
             System.out.println("Using Flat File");
             db = new FlatFileDataBase(new File(configPath+"/ForgePerm/FlatFile"));
-        }
+        //}
 
         config.save();
         //loads groups

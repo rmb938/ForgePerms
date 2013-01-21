@@ -8,6 +8,11 @@ public class Permission {
 
     private String permission;
     private PermissionType defaultType = PermissionType.OP;
+    
+    public Permission(String permission, PermissionType defaultType) {
+        this.permission = permission;
+        this.defaultType = defaultType;
+    }
 
     public PermissionType getDefaultType() {
         return defaultType;
