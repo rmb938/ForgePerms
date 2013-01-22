@@ -1,6 +1,7 @@
 package com.gmail.rmb1993.forgeperms.commands.user;
 
-import com.gmail.rmb1993.forgeperms.ForgePerms;
+import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import net.minecraft.command.ICommandSender;
@@ -9,10 +10,11 @@ public class SetUserPrefix {
 
     public SetUserPrefix(ICommandSender sender, String[] args) {
         if (args.length == 3) {
-            User u = ForgePerms.instance.users.get(sender.getCommandSenderName());
+            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.prefix")) {
-                User u1 = ForgePerms.instance.users.get(args[1]);
+                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
                 u1.getVars().put("prefix", args[2]);
+                ForgePermsContainer.instance.config.getDb().saveUsers();
                 sender.sendChatToPlayer("You set "+args[1]+"'s prefix to "+args[2]);
             } else {
                 sender.sendChatToPlayer("You do not have permission to use this command.");

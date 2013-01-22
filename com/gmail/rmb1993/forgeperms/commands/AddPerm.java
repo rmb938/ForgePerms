@@ -1,6 +1,7 @@
 package com.gmail.rmb1993.forgeperms.commands;
 
-import com.gmail.rmb1993.forgeperms.ForgePerms;
+import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import java.util.ArrayList;
@@ -18,9 +19,9 @@ public class AddPerm {
     
     public void user() {
         if (args.length == 3) {
-            User u = ForgePerms.instance.users.get(sender.getCommandSenderName());
+            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.adduserperm")) {
-                User u1 = ForgePerms.instance.users.get(args[1]);
+                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
                 ArrayList<String> world = new ArrayList();
                 world.add("global");
                 u1.getPermissions().put(args[2], world);

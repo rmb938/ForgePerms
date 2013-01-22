@@ -83,11 +83,6 @@ public class Configuration {
         //}
 
         config.save();
-        //loads groups
-        if (db.loadGroup(defaultGroup) == null) {
-            db.createGroup(defaultGroup);
-            db.loadGroup(defaultGroup);
-        }
     }
     
 }

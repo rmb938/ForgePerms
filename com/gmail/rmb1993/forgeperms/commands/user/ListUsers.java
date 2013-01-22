@@ -1,6 +1,7 @@
 package com.gmail.rmb1993.forgeperms.commands.user;
 
-import com.gmail.rmb1993.forgeperms.ForgePerms;
+import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import net.minecraft.command.ICommandSender;
@@ -8,10 +9,10 @@ import net.minecraft.command.ICommandSender;
 public class ListUsers {
 
     public ListUsers(ICommandSender sender, String[] args) {
-        User u = ForgePerms.instance.users.get(sender.getCommandSenderName());
+        User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
         if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUsers")) {
             sender.sendChatToPlayer("Users: ");
-            for (User u1 : ForgePerms.instance.users.values()) {
+            for (User u1 : ForgePermsContainer.instance.users.values()) {
                 sender.sendChatToPlayer(u1.getUserName());
             }
         } else {

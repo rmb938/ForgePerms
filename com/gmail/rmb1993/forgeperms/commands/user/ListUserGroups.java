@@ -1,6 +1,7 @@
 package com.gmail.rmb1993.forgeperms.commands.user;
 
-import com.gmail.rmb1993.forgeperms.ForgePerms;
+import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
@@ -10,11 +11,12 @@ public class ListUserGroups {
 
     public ListUserGroups(ICommandSender sender, String[] args) {
         if (args.length == 2) {
-            User u = ForgePerms.instance.users.get(sender.getCommandSenderName());
+            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUserGroups")) {
-                User u1 = ForgePerms.instance.users.get(args[1]);
+                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
                 sender.sendChatToPlayer(args[1]+"'s Groups: ");
-                for (Group g : u1.getGroups()) {
+                for (String gN : u1.getGroups()) {
+                    Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
                     sender.sendChatToPlayer(g.getGroupName()+" Track: "+g.getTrack());
                 }
             } else {

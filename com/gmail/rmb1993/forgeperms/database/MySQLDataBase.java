@@ -7,7 +7,12 @@ import com.gmail.rmb1993.forgeperms.permissions.user.User;
  * @author Ryan
  */
 public class MySQLDataBase extends DataBase {
-
+    
+    @Override
+    public void loadUsers() {
+        
+    }
+    
     @Override
     public void createUser(String userName) {
         throw new UnsupportedOperationException("Not supported yet.");
@@ -15,11 +20,6 @@ public class MySQLDataBase extends DataBase {
     
     @Override
     public User loadUser(String userName) {
-        throw new UnsupportedOperationException("Not supported yet.");
-    }
-
-    @Override
-    public void saveUser(String userName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -40,12 +40,17 @@ public class MySQLDataBase extends DataBase {
     }
 
     @Override
-    public void saveGroup(String groupName) {
+    public void removeGroup(String groupName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
-    public void removeGroup(String groupName) {
+    public void saveUsers() {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    @Override
+    public void saveGroups() {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

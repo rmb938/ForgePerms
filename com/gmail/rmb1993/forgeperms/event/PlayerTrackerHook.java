@@ -11,22 +11,22 @@ public class PlayerTrackerHook implements IPlayerTracker {
 
     @Override
     public void onPlayerLogin(EntityPlayer player) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void onPlayerLogout(EntityPlayer player) {
-        throw new UnsupportedOperationException("Not supported yet.");
+       // throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void onPlayerChangedDimension(EntityPlayer player) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
     @Override
     public void onPlayerRespawn(EntityPlayer player) {
-        throw new UnsupportedOperationException("Not supported yet.");
+        //throw new UnsupportedOperationException("Not supported yet.");
     }
 
 }

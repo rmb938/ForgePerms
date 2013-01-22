@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms.commands;
 
+import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.commands.user.*;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.ICommandSender;
@@ -15,6 +16,11 @@ public class UserCommand extends CommandBase  {
         return "user";
     }
 
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
+        return true;
+    }
+    
     @Override
     public void processCommand(ICommandSender var1, String[] var2) {
         if (var2.length >= 1) {

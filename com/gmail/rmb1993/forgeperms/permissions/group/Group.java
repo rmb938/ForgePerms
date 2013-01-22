@@ -31,20 +31,32 @@ public class Group {
     }
     
     //Permission, World(TBA)
-    private HashMap<String, String> permissions = new HashMap();
+    private HashMap<String, String> permissions;
     
     //Key, Value
-    private HashMap<String, String> vars = new HashMap();
+    private HashMap<String, String> vars;
 
     public HashMap<String, String> getVars() {
         return vars;
     }
+
+    public void setGroups(ArrayList<String> groups) {
+        this.inheritance = groups;
+    }
+
+    public void setPermissions(HashMap<String, String> permissions) {
+        this.permissions = permissions;
+    }
+
+    public void setVars(HashMap<String, String> vars) {
+        this.vars = vars;
+    }
     
     //Group
-    private ArrayList<Group> groups = new ArrayList();
+    private ArrayList<String> inheritance;
 
-    public ArrayList<Group> getGroups() {
-        return groups;
+    public ArrayList<String> getGroups() {
+        return inheritance;
     }
 
     public HashMap<String, String> getPermissions() {
