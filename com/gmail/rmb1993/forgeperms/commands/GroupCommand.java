@@ -11,6 +11,11 @@ public class GroupCommand extends CommandBase {
     }
 
     @Override
+    public boolean canCommandSenderUseCommand(ICommandSender par1ICommandSender) {
+        return true;
+    }
+    
+    @Override
     public void processCommand(ICommandSender var1, String[] var2) {
         if (var2.length >= 1) {
             String command = var2[0];

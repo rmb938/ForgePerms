@@ -5,6 +5,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
+import com.gmail.rmb1993.forgeperms.utils.StringColors;
 import net.minecraft.command.ICommandSender;
 
 public class ListUserGroups {
@@ -20,10 +21,10 @@ public class ListUserGroups {
                     sender.sendChatToPlayer(g.getGroupName()+" Track: "+g.getTrack());
                 }
             } else {
-                sender.sendChatToPlayer("You do not have permission to use this command.");
+                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }
         } else {
-            sender.sendChatToPlayer("Usage: /user listUserGroups [userName]");
+            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /user listUserGroups [userName]"));
         }
     }
     

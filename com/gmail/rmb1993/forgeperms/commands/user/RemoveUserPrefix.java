@@ -4,6 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
+import com.gmail.rmb1993.forgeperms.utils.StringColors;
 import net.minecraft.command.ICommandSender;
 
 public class RemoveUserPrefix {
@@ -15,12 +16,12 @@ public class RemoveUserPrefix {
                 User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
                 u1.getVars().remove("prefix");
                 ForgePermsContainer.instance.config.getDb().saveUsers();
-                sender.sendChatToPlayer("You removed "+args[1]+"'s prefix");
+                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You removed "+args[1]+"'s prefix"));
             } else {
-                sender.sendChatToPlayer("You do not have permission to use this command.");
+                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }
         } else {
-            sender.sendChatToPlayer("Usage: /user removePrefix [userName]");
+            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /user removePrefix [userName]"));
         }
     }
 

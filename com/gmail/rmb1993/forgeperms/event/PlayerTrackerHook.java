@@ -1,5 +1,7 @@
 package com.gmail.rmb1993.forgeperms.event;
 
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
+import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import cpw.mods.fml.common.IPlayerTracker;
 import net.minecraft.entity.player.EntityPlayer;
 
@@ -11,7 +13,11 @@ public class PlayerTrackerHook implements IPlayerTracker {
 
     @Override
     public void onPlayerLogin(EntityPlayer player) {
-        //throw new UnsupportedOperationException("Not supported yet.");
+        User u = ForgePermsContainer.instance.config.getDb().loadUser(player.getEntityName());
+        if (u == null) {
+            ForgePermsContainer.instance.config.getDb().createUser(player.getEntityName());
+            
+        }
     }
 
     @Override

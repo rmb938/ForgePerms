@@ -3,6 +3,7 @@ package com.gmail.rmb1993.forgeperms.database;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.config.Configuration;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
+import com.gmail.rmb1993.forgeperms.permissions.group.Track;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import java.io.*;
 import java.util.ArrayList;
@@ -20,17 +21,17 @@ import org.yaml.snakeyaml.representer.Representer;
  * @author Ryan
  */
 public class FlatFileDataBase extends DataBase {
-    
+
     private File location;
     private boolean global;
-    
+
     public FlatFileDataBase(File location) {
         super();
         this.location = location;
         Configuration config = ForgePermsContainer.instance.config;
         global = config.isGlobal();
     }
-    
+
     @Override
     public void loadUsers() {
         File file = new File(location + "/users.yml");
@@ -41,16 +42,15 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        
-        
+
+
         Representer representer = new Representer();
         representer.addClassTag(User.class, new Tag("!user"));
-        
+
         Yaml yaml = new Yaml(representer, options);
-        
+
         InputStream input = null;
         try {
             input = new FileInputStream(file);
@@ -67,28 +67,30 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public void createUser(String userName) {
+        userName = userName.toLowerCase();
+        System.out.println("Starting creating user");
         if (ForgePermsContainer.instance.users.containsKey(userName)) {
-            System.out.println("User "+userName+" is already in file!");
+            System.out.println("User " + userName + " is already in file!");
             return;
         }
-        
+
         User u = new User();
         u.setUserName(userName);
-        
-        
+
+
         Group g = new Group();
         g.setGroupName("default");
         u.setGroups(new ArrayList<String>());
         u.getGroups().add(g.getGroupName());
-        
+
         u.setPermissions(new HashMap<String, List<String>>());
-        
+
         u.setVars(new HashMap<String, String>());
-        
-        
+
+
         File file = new File(location + "/users.yml");
         if (file.exists() == false) {
             try {
@@ -97,14 +99,14 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        
-        
+
+
         Representer representer = new Representer();
         representer.addClassTag(User.class, new Tag("!user"));
-        
+
         Yaml yaml = new Yaml(representer, options);
         OutputStream output = null;
         try {
@@ -113,6 +115,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(output);
+        System.out.println("Created User");
         ForgePermsContainer.instance.users.put(userName, u);
         yaml.dumpAll(ForgePermsContainer.instance.users.values().iterator(), osw);
         try {
@@ -122,7 +125,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public User loadUser(String userName) {
         userName = userName.toLowerCase();
@@ -131,29 +134,42 @@ public class FlatFileDataBase extends DataBase {
         }
         if (userName.equalsIgnoreCase("server")) {
             User u = new User();
-            ForgePermsContainer.instance.users.put(userName, u);
+            u.setUserName(userName);
+            Group g = new Group();
+            g.setGroupName("default");
+            u.setGroups(new ArrayList<String>());
+            u.getGroups().add(g.getGroupName());
+            u.setPermissions(new HashMap<String, List<String>>());
+            u.setVars(new HashMap<String, String>());
             return u;
         }
         return null;
     }
-    
+
     @Override
     public void createGroup(String groupName) {
+        groupName = groupName.toLowerCase();
         if (ForgePermsContainer.instance.groups.containsKey(groupName)) {
-            System.out.println("Group "+groupName+" is already in file!");
+            System.out.println("Group " + groupName + " is already in file!");
             return;
         }
-        
+
         Group u = new Group();
         u.setGroupName(groupName);
-        
+
         u.setGroups(new ArrayList<String>());
-        
+
         u.setPermissions(new HashMap<String, String>());
-        
+
         u.setVars(new HashMap<String, String>());
-        
-        
+        u.setTrack("default");
+        if (ForgePermsContainer.instance.tracks.containsKey("default") == false) {
+            ForgePermsContainer.instance.tracks.put("default", new Track());
+        }
+
+        Track track = ForgePermsContainer.instance.tracks.get("default");
+        track.addGroup(u);
+
         File file = new File(location + "/groups.yml");
         if (file.exists() == false) {
             try {
@@ -162,14 +178,14 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        
-        
+
+
         Representer representer = new Representer();
-        representer.addClassTag(User.class, new Tag("!group"));
-        
+        representer.addClassTag(Group.class, new Tag("!group"));
+
         Yaml yaml = new Yaml(representer, options);
         OutputStream output = null;
         try {
@@ -187,7 +203,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public void loadGroups() {
         File file = new File(location + "/groups.yml");
@@ -198,16 +214,16 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        
-        
+
+
         Representer representer = new Representer();
-        representer.addClassTag(User.class, new Tag("!group"));
-        
+        representer.addClassTag(Group.class, new Tag("!group"));
+
         Yaml yaml = new Yaml(representer, options);
-        
+
         InputStream input = null;
         try {
             input = new FileInputStream(file);
@@ -216,6 +232,12 @@ public class FlatFileDataBase extends DataBase {
         }
         for (Object obj : yaml.loadAll(input)) {
             Group u = (Group) obj;
+            if (ForgePermsContainer.instance.tracks.containsKey(u.getTrack()) == false) {
+                ForgePermsContainer.instance.tracks.put(u.getTrack(), new Track());
+            }
+
+            Track track = ForgePermsContainer.instance.tracks.get(u.getTrack());
+            track.addGroup(u);
             ForgePermsContainer.instance.groups.put(u.getGroupName(), u);
         }
         try {
@@ -224,7 +246,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
+
     @Override
     public Group loadGroup(String groupName) {
         groupName = groupName.toLowerCase();
@@ -233,11 +255,12 @@ public class FlatFileDataBase extends DataBase {
         }
         return null;
     }
-    
+
     @Override
     public void removeGroup(String groupName) {
+        groupName = groupName.toLowerCase();
         ForgePermsContainer.instance.groups.remove(groupName);
-        
+
         for (User u : ForgePermsContainer.instance.users.values()) {
             u.getGroups().remove(groupName);
             if (u.getGroups().isEmpty()) {
@@ -261,28 +284,26 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        
-        
+
+
         Representer representer = new Representer();
-        representer.addClassTag(User.class, new Tag("!group"));
-        
+        representer.addClassTag(User.class, new Tag("!user"));
+
         Yaml yaml = new Yaml(representer, options);
-        
-        InputStream input = null;
+        OutputStream output = null;
         try {
-            input = new FileInputStream(file);
+            output = new FileOutputStream(file);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Object obj : yaml.loadAll(input)) {
-            User u = (User) obj;
-            ForgePermsContainer.instance.users.put(u.getUserName(), u);
-        }
+        OutputStreamWriter osw = new OutputStreamWriter(output);
+        yaml.dumpAll(ForgePermsContainer.instance.users.values().iterator(), osw);
         try {
-            input.close();
+            osw.close();
+            output.close();
         } catch (IOException ex) {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -290,7 +311,7 @@ public class FlatFileDataBase extends DataBase {
 
     @Override
     public void saveGroups() {
-        
+
         File file = new File(location + "/groups.yml");
         if (file.exists() == false) {
             try {
@@ -299,30 +320,29 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        
+
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        
-        
+
+
         Representer representer = new Representer();
-        representer.addClassTag(User.class, new Tag("!group"));
-        
+        representer.addClassTag(Group.class, new Tag("!group"));
+
         Yaml yaml = new Yaml(representer, options);
-        
-        InputStream input = null;
+        OutputStream output = null;
         try {
-            input = new FileInputStream(file);
+            output = new FileOutputStream(file);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
-        for (Object obj : yaml.loadAll(input)) {
-            Group u = (Group) obj;
-            ForgePermsContainer.instance.groups.put(u.getGroupName(), u);
-        }
+        OutputStreamWriter osw = new OutputStreamWriter(output);
+        yaml.dumpAll(ForgePermsContainer.instance.groups.values().iterator(), osw);
         try {
-            input.close();
+            osw.close();
+            output.close();
         } catch (IOException ex) {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
+
     }
 }

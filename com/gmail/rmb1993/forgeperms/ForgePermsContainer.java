@@ -71,12 +71,12 @@ public class ForgePermsContainer extends DummyModContainer {
     @Subscribe
     public void load(FMLInitializationEvent e) {
         System.out.println("Forge Perms Loaded");
-        config.getDb().loadUsers();
         config.getDb().loadGroups();
         if (config.getDb().loadGroup(config.getDefaultGroup()) == null) {
             System.out.println("Creating Default group");
             config.getDb().createGroup(config.getDefaultGroup());
         }
+        config.getDb().loadUsers();
     }
 
     @Subscribe

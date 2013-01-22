@@ -12,13 +12,13 @@ public class Group {
 
     private String groupName;
     private int rank;
-    private Track track;
+    private String track;
 
-    public Track getTrack() {
+    public String getTrack() {
         return track;
     }
 
-    public void setTrack(Track track) {
+    public void setTrack(String track) {
         this.track = track;
     }
 
