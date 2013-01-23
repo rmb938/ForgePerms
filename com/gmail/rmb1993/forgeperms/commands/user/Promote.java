@@ -46,7 +46,6 @@ public class Promote {
                 u1.getGroups().add(nextGroup.getGroupName());
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You promoted " + args[1] + " to group " + nextGroup.getGroupName() + " in track " + args[2]));
-                fpc.config.getDb().saveUsers();
             } else if (ForgePermsAPI.playerHasPermission(sender.getCommandSenderName(), "permissions.promote")) {
                 User u1 = fpc.config.getDb().getUser(args[1]);
                 if (u1 == null) {
@@ -95,7 +94,6 @@ public class Promote {
                 u1.getGroups().add(nextGroup.getGroupName());
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You promoted " + args[1] + " to group " + nextGroup.getGroupName() + " in track " + args[2]));
-                fpc.config.getDb().saveUsers();
             } else {
                 sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }

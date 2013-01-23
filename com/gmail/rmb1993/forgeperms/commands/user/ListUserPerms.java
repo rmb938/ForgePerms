@@ -26,7 +26,7 @@ public class ListUserPerms {
                 sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /user listUserGroups [userName]"));
+            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /user listPerms [userName]"));
         }
     }
     

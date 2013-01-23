@@ -34,7 +34,6 @@ public class AddGroup {
                 u1.getGroups().add(g.getGroupName());
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You added "+args[1]+" to group "+args[2]));
-                fpc.config.getDb().saveUsers();
             } else {
                 sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }

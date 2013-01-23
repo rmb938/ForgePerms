@@ -10,6 +10,7 @@ import net.minecraft.command.ICommandSender;
 /**
  *
  * @author Ryan
+ * @author Favorlock
  */
 public class Remove {
 

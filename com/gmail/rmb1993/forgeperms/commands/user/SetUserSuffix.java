@@ -20,7 +20,6 @@ public class SetUserSuffix {
                 u1.getVars().put("suffix", args[2]);
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You set "+args[1]+"'s suffix to "+args[2]));
-                fpc.config.getDb().saveUsers();
             } else {
                 sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }

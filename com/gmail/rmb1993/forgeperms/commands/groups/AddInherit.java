@@ -11,6 +11,7 @@ import net.minecraft.command.ICommandSender;
 /**
  *
  * @author Ryan
+ * @author Favorlock
  */
 public class AddInherit {
 
@@ -28,12 +29,14 @@ public class AddInherit {
             		}
             		Group g = fpc.config.getDb().getGroup(args[1]);
             		g.getInheritance().add(args[2]);
+            		fpc.config.getDb().saveGroups();
+            		sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("Group " + args[1] + " now inherits" + args[2] + "!"));
             	}
         	} else {
         		sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
         	}
         } else {
-        	sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group addInherit [Group] [inheritedGroup]"));
+        	sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group addInherit [groupName] [inheritGroup]"));
         }
     }
 

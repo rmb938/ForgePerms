@@ -35,7 +35,6 @@ public class RemoveGroup {
                 u1.getGroups().remove(g.getGroupName());
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You removed "+args[1]+" from group "+args[2]));
-                fpc.config.getDb().saveUsers();
             } else {
                 sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
             }

@@ -46,7 +46,6 @@ public class Demote {
                 u1.getGroups().add(prevGroup.getGroupName());
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You demoted " + args[1] + " to group " + prevGroup.getGroupName() + " in track " + args[2]));
-                fpc.config.getDb().saveUsers();
             } else if (ForgePermsAPI.playerHasPermission(sender.getCommandSenderName(), "permissions.demote")) {
                 User u1 = fpc.config.getDb().getUser(args[1]);
                 if (u1 == null) {
