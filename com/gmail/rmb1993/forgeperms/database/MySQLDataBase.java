@@ -14,12 +14,17 @@ public class MySQLDataBase extends DataBase {
     }
     
     @Override
+    public void loadCustomNodes() {
+        
+    }
+    
+    @Override
     public void createUser(String userName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
     @Override
-    public User loadUser(String userName) {
+    public User getUser(String userName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -35,7 +40,7 @@ public class MySQLDataBase extends DataBase {
     }
     
     @Override
-    public Group loadGroup(String groupName) {
+    public Group getGroup(String groupName) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

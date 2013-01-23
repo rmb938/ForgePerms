@@ -12,12 +12,16 @@ public class ListUserGroups {
 
     public ListUserGroups(ICommandSender sender, String[] args) {
         if (args.length == 2) {
-            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
+            User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUserGroups")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
+                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                if (u1 == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    return;
+                }
                 sender.sendChatToPlayer(args[1]+"'s Groups: ");
                 for (String gN : u1.getGroups()) {
-                    Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                    Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                     sender.sendChatToPlayer(g.getGroupName()+" Track: "+g.getTrack());
                 }
             } else {

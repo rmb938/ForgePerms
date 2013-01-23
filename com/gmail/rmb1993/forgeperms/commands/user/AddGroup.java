@@ -15,10 +15,14 @@ public class AddGroup {
 
     public AddGroup(ICommandSender sender, String[] args) {
         if (args.length == 3) {
-            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
-            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.addGroup")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
-                Group g = ForgePermsContainer.instance.config.getDb().loadGroup(args[2]);
+            User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.addUserGroup")) {
+                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                if (u1 == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    return;
+                }
+                Group g = ForgePermsContainer.instance.config.getDb().getGroup(args[2]);
                 if (g == null) {
                     sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group "+args[2]+" does not exist!"));
                     return;

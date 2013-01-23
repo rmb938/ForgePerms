@@ -11,9 +11,13 @@ public class RemoveUserPrefix {
     
     public RemoveUserPrefix(ICommandSender sender, String[] args) {
         if (args.length == 2) {
-            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
-            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.prefix")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
+            User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.userPrefix")) {
+                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                if (u1 == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    return;
+                }
                 u1.getVars().remove("prefix");
                 ForgePermsContainer.instance.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You removed "+args[1]+"'s prefix"));

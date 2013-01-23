@@ -10,7 +10,7 @@ import net.minecraft.command.ICommandSender;
 public class ListUsers {
 
     public ListUsers(ICommandSender sender, String[] args) {
-        User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
+        User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
         if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUsers")) {
             sender.sendChatToPlayer("Users: ");
             for (User u1 : ForgePermsContainer.instance.users.values()) {

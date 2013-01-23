@@ -1,6 +1,5 @@
 package com.gmail.rmb1993.forgeperms.api;
 
-import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.permissions.Permission;
 import com.gmail.rmb1993.forgeperms.permissions.PermissionType;
@@ -10,14 +9,15 @@ import java.util.ArrayList;
 import net.minecraft.src.ModLoader;
 
 public class ForgePermsAPI {
-
+    
     public static boolean playerHasPermission(String playerName, String permission) {
         permission = permission.toLowerCase();
         if (playerName.equalsIgnoreCase("server")) {
             return true;
         }
+        
+        User u = ForgePermsContainer.instance.config.getDb().getUser(playerName);
         Permission perm = ForgePermsContainer.instance.permissions.get(permission);
-        User u = ForgePermsContainer.instance.config.getDb().loadUser(playerName);
         if (perm != null) {
             if (perm.getDefaultType() == PermissionType.CONSOLE) {
                 return false;
@@ -29,9 +29,9 @@ public class ForgePermsAPI {
                 if (u.getPermissions().containsKey("^" + permission) == true) {
                     return false;
                 } else {
-                    Group highestRank = ForgePermsContainer.instance.config.getDb().loadGroup(u.getGroups().get(0));
+                    Group highestRank = ForgePermsContainer.instance.config.getDb().getGroup(u.getGroups().get(0));
                     for (String gN : u.getGroups()) {
-                        Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                        Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                         if (g.getRank() > highestRank.getRank()) {
                             highestRank = g;
                         }
@@ -43,13 +43,23 @@ public class ForgePermsAPI {
                 return true;
             }
         }
+        
+        for (String cNode : u.getCustomPermissions().keySet()) {
+            ArrayList<String> nodes = ForgePermsContainer.instance.customNodes.get(cNode);
+            for (String node : nodes) {
+                if (node.equalsIgnoreCase(permission)) {
+                    return true;
+                }
+            }
+        }
+        
         if (u.getPermissions().containsKey(permission) == true) {
             return true;
         } else if (u.getPermissions().containsKey("^" + permission) == true) {
             return false;
         } else {
             for (String gN : u.getGroups()) {
-                Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                 if (groupHasPermission(g.getGroupName(), permission, true) == true) {
                     return true;
                 }
@@ -62,22 +72,32 @@ public class ForgePermsAPI {
         if (playerName.equalsIgnoreCase("server")) {
             return null;
         }
-        User u = ForgePermsContainer.instance.config.getDb().loadUser(playerName);
+        User u = ForgePermsContainer.instance.config.getDb().getUser(playerName);
         return u.getGroups();
     }
 
-    public static boolean groupHasPermission(String groupName, String permission, boolean checkInherits) {
+    private static boolean groupHasPermission(String groupName, String permission, boolean checkInherits) {
         permission = permission.toLowerCase();
-        Group g = ForgePermsContainer.instance.config.getDb().loadGroup(groupName);
+        Group g = ForgePermsContainer.instance.config.getDb().getGroup(groupName);
+        
+        for (String cNode : g.getCustomPermissions().keySet()) {
+            ArrayList<String> nodes = ForgePermsContainer.instance.customNodes.get(cNode);
+            for (String node : nodes) {
+                if (node.equalsIgnoreCase(permission)) {
+                    return true;
+                }
+            }
+        }
+        
         if (g.getPermissions().containsKey(permission) == true) {
             return true;
         } else if (g.getPermissions().containsKey("^" + permission) == true) {
             return false;
         } else {
             if (checkInherits == true) {
-                if (g.getGroups().size() > 0) {
-                    for (String g1N : g.getGroups()) {
-                        Group g1 = ForgePermsContainer.instance.config.getDb().loadGroup(g1N);
+                if (g.getInheritance().size() > 0) {
+                    for (String g1N : g.getInheritance()) {
+                        Group g1 = ForgePermsContainer.instance.config.getDb().getGroup(g1N);
                         if (g1 != null) {
                             if (groupHasPermission(g1.getGroupName(), permission, true) == true) {
                                 return true;
@@ -91,8 +111,8 @@ public class ForgePermsAPI {
     }
 
     public static ArrayList<String> getGroupInheritted(String groupName) {
-        Group g = ForgePermsContainer.instance.config.getDb().loadGroup(groupName);
-        return g.getGroups();
+        Group g = ForgePermsContainer.instance.config.getDb().getGroup(groupName);
+        return g.getInheritance();
     }
 
     public static String getPlayerPrefix(String playerName) {
@@ -110,19 +130,19 @@ public class ForgePermsAPI {
     }
 
     public static void setPlayerVar(String playerName, String varName, String varValue) {
-        User u = ForgePermsContainer.instance.config.getDb().loadUser(playerName);
+        User u = ForgePermsContainer.instance.config.getDb().getUser(playerName);
         u.getVars().put(varName, varValue);
         ForgePermsContainer.instance.config.getDb().saveUsers();
     }
     
     public static String getPlayerVar(String playerName, String varName) {
-        User u = ForgePermsContainer.instance.config.getDb().loadUser(playerName);
+        User u = ForgePermsContainer.instance.config.getDb().getUser(playerName);
         if (u.getVars().get(varName) != null) {
             return u.getVars().get(varName);
         } else {
-            Group highestRank = ForgePermsContainer.instance.config.getDb().loadGroup(u.getGroups().get(0));
+            Group highestRank = ForgePermsContainer.instance.config.getDb().getGroup(u.getGroups().get(0));
             for (String gN : u.getGroups()) {
-                Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                 if (g.getRank() > highestRank.getRank()) {
                     highestRank = g;
                 }
@@ -140,13 +160,13 @@ public class ForgePermsAPI {
     }
 
     public static void setGroupVar(String groupName, String varName, String varValue) {
-        Group g = ForgePermsContainer.instance.config.getDb().loadGroup(groupName);
+        Group g = ForgePermsContainer.instance.config.getDb().getGroup(groupName);
         g.getVars().put(varName, varValue);
         ForgePermsContainer.instance.config.getDb().saveGroups();
     }
     
     public static String getGroupVar(String groupName, String varName) {
-        Group g = ForgePermsContainer.instance.config.getDb().loadGroup(groupName);
+        Group g = ForgePermsContainer.instance.config.getDb().getGroup(groupName);
         return g.getVars().get(varName);
     }
 }

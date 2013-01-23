@@ -1,11 +1,8 @@
 package com.gmail.rmb1993.forgeperms.permissions.user;
 
-import com.gmail.rmb1993.forgeperms.permissions.Permission;
-import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -14,6 +11,17 @@ import java.util.Set;
 public class User {
 
     private String userName;
+    
+    //Custom Perm, World(TBA)
+    private HashMap<String, List<String>> customPermissions;
+
+    public HashMap<String, List<String>> getCustomPermissions() {
+        return customPermissions;
+    }
+
+    public void setCustomPermissions(HashMap<String, List<String>> customPermissions) {
+        this.customPermissions = customPermissions;
+    }
     
     //Permission, World(TBA)
     private HashMap<String, List<String>> permissions;

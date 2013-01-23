@@ -1,8 +1,8 @@
 package com.gmail.rmb1993.forgeperms.permissions.group;
 
-import com.gmail.rmb1993.forgeperms.permissions.Permission;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  *
@@ -30,6 +30,17 @@ public class Group {
         this.rank = rank;
     }
     
+    //Custom Perm, World(TBA)
+    private HashMap<String, List<String>> customPermissions;
+
+    public HashMap<String, List<String>> getCustomPermissions() {
+        return customPermissions;
+    }
+
+    public void setCustomPermissions(HashMap<String, List<String>> customPermissions) {
+        this.customPermissions = customPermissions;
+    }
+    
     //Permission, World(TBA)
     private HashMap<String, String> permissions;
     
@@ -40,7 +51,7 @@ public class Group {
         return vars;
     }
 
-    public void setGroups(ArrayList<String> groups) {
+    public void setInheritance(ArrayList<String> groups) {
         this.inheritance = groups;
     }
 
@@ -55,7 +66,7 @@ public class Group {
     //Group
     private ArrayList<String> inheritance;
 
-    public ArrayList<String> getGroups() {
+    public ArrayList<String> getInheritance() {
         return inheritance;
     }
 

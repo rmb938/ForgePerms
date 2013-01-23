@@ -6,9 +6,9 @@ import net.minecraft.command.ICommandSender;
  *
  * @author Ryan
  */
-public class RemoveInherit {
+public class SetRank {
 
-    public RemoveInherit(ICommandSender var1, String[] var2) {
+    public SetRank(ICommandSender var1, String[] var2) {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 

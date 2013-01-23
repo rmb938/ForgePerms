@@ -12,15 +12,14 @@ import com.gmail.rmb1993.forgeperms.permissions.group.Track;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import cpw.mods.fml.common.DummyModContainer;
-import cpw.mods.fml.common.LoadController;
-import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.ModMetadata;
+import cpw.mods.fml.common.*;
 import cpw.mods.fml.common.event.*;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Set;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
@@ -53,6 +52,7 @@ public class ForgePermsContainer extends DummyModContainer {
     public HashMap<String, User> users = new HashMap();
     public HashMap<String, Group> groups = new HashMap();
     public HashMap<String, Permission> permissions = new HashMap();
+    public HashMap<String, ArrayList<String>> customNodes = new HashMap();
     public HashMap<String, Track> tracks = new HashMap();
 
     @Subscribe
@@ -71,17 +71,22 @@ public class ForgePermsContainer extends DummyModContainer {
     @Subscribe
     public void load(FMLInitializationEvent e) {
         System.out.println("Forge Perms Loaded");
+        
+        config.getDb().loadCustomNodes();
+        System.out.println("Forge Perms Loaded Custom Nodes");
         config.getDb().loadGroups();
-        if (config.getDb().loadGroup(config.getDefaultGroup()) == null) {
+        if (config.getDb().getGroup(config.getDefaultGroup()) == null) {
             System.out.println("Creating Default group");
             config.getDb().createGroup(config.getDefaultGroup());
         }
+        System.out.println("Forge Perms Loaded Groups");
         config.getDb().loadUsers();
+        System.out.println("Forge Perms Loaded Users");
+        
     }
 
     @Subscribe
     public void postLoad(FMLPostInitializationEvent e) {
-        //post load things?
     }
 
     public void loadVanillaPerms() {
@@ -120,11 +125,24 @@ public class ForgePermsContainer extends DummyModContainer {
     }
 
     public void loadPermissionPerms() {
+        /*User Perms*/
+        permissions.put("permissions.addUserGroup", new Permission("permissions.addUserGroup", PermissionType.OP));
+        permissions.put("permissions.demote", new Permission("permissions.demote", PermissionType.OP));
+        permissions.put("permissions.demote.all", new Permission("permissions.demote.all", PermissionType.OP));
+        permissions.put("permissions.listUserGroups", new Permission("permissions.listUserGroups", PermissionType.OP));
+        permissions.put("permissions.listUserPerms", new Permission("permissions.listUserPerms", PermissionType.OP));
+        permissions.put("permissions.listUsers", new Permission("permissions.listUsers", PermissionType.OP));
+        permissions.put("permissions.promote", new Permission("permissions.promote", PermissionType.OP));
+        permissions.put("permissions.promote.all", new Permission("permissions.promote.all", PermissionType.OP));
+        permissions.put("permissions.removeUserGroup", new Permission("permissions.removeUserGroup", PermissionType.OP));
+        permissions.put("permissions.userSuffix", new Permission("permissions.userSuffix", PermissionType.OP));
+        permissions.put("permissions.userPrefix", new Permission("permissions.userPrefix", PermissionType.OP));
+        /*Group Perms*/
     }
 
     @Subscribe
     public void serverStarting(FMLServerStartingEvent e) {
-        MinecraftServer server = ModLoader.getMinecraftServerInstance();
+        MinecraftServer server = e.getServer();
         ICommandManager commandManager = server.getCommandManager();
         ServerCommandManager serverCommandManager = ((ServerCommandManager) commandManager);
 

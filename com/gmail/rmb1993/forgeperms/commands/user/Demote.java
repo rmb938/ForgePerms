@@ -13,9 +13,13 @@ public class Demote {
 
     public Demote(ICommandSender sender, String[] args) {
         if (args.length == 3) {
-            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
-            if (ForgePermsAPI.playerHasPermission(sender.getCommandSenderName(), "permissions.promote.all")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
+            User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(sender.getCommandSenderName(), "permissions.demote.all")) {
+                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                if (u1 == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    return;
+                }
                 Track track = ForgePermsContainer.instance.tracks.get(args[2]);
                 if (track == null) {
                     sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry track " + args[2] + " does not exist!"));
@@ -23,7 +27,7 @@ public class Demote {
                 }
                 Group groupInTrack = null;
                 for (String gN : u1.getGroups()) {
-                    Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                    Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                     if (g.getTrack().equalsIgnoreCase(track.getTrackName())) {
                         groupInTrack = g;
                         break;
@@ -42,8 +46,12 @@ public class Demote {
                 u1.getGroups().add(prevGroup.getGroupName());
                 ForgePermsContainer.instance.config.getDb().saveUsers();
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You demoted " + args[1] + " to group " + prevGroup.getGroupName() + " in track " + args[2]));
-            } else if (ForgePermsAPI.playerHasPermission(sender.getCommandSenderName(), "permissions.promote")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
+            } else if (ForgePermsAPI.playerHasPermission(sender.getCommandSenderName(), "permissions.demote")) {
+                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                if (u1 == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    return;
+                }
                 Track track = ForgePermsContainer.instance.tracks.get(args[2]);
                 if (track == null) {
                     sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry track " + args[2] + " does not exist!"));
@@ -52,7 +60,7 @@ public class Demote {
                 boolean notInTrack = true;
                 Group myGroup = null;
                 for (String gN : u.getGroups()) {
-                    Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                    Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                     if (g.getTrack().equalsIgnoreCase(track.getTrackName())) {
                         notInTrack = false;
                         myGroup = g;
@@ -65,7 +73,7 @@ public class Demote {
                 }
                 Group groupInTrack = null;
                 for (String gN : u1.getGroups()) {
-                    Group g = ForgePermsContainer.instance.config.getDb().loadGroup(gN);
+                    Group g = ForgePermsContainer.instance.config.getDb().getGroup(gN);
                     if (g.getTrack().equalsIgnoreCase(track.getTrackName())) {
                         groupInTrack = g;
                         break;

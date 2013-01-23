@@ -13,7 +13,7 @@ public class PlayerTrackerHook implements IPlayerTracker {
 
     @Override
     public void onPlayerLogin(EntityPlayer player) {
-        User u = ForgePermsContainer.instance.config.getDb().loadUser(player.getEntityName());
+        User u = ForgePermsContainer.instance.config.getDb().getUser(player.getEntityName());
         if (u == null) {
             ForgePermsContainer.instance.config.getDb().createUser(player.getEntityName());
             

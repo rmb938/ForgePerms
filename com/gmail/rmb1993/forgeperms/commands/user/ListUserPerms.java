@@ -11,9 +11,13 @@ public class ListUserPerms {
 
     public ListUserPerms(ICommandSender sender, String[] args) {
         if (args.length == 2) {
-            User u = ForgePermsContainer.instance.config.getDb().loadUser(sender.getCommandSenderName());
+            User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUserPerms")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().loadUser(args[1]);
+                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                if (u1 == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    return;
+                }
                 sender.sendChatToPlayer(args[1]+"'s Permissions: ");
                 for (String perm : u1.getPermissions().keySet()) {
                     sender.sendChatToPlayer(perm);

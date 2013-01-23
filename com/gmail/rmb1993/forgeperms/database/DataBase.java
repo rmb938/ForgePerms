@@ -9,11 +9,13 @@ import com.gmail.rmb1993.forgeperms.permissions.user.User;
  */
 public abstract class DataBase {
 
+    public abstract void loadCustomNodes();
+    
     public abstract void loadUsers();
     
     public abstract void createUser(String userName);
     
-    public abstract User loadUser(String userName);
+    public abstract User getUser(String userName);
     
     public abstract void saveUsers();
     
@@ -21,7 +23,7 @@ public abstract class DataBase {
     
     public abstract void loadGroups();
     
-    public abstract Group loadGroup(String groupName);
+    public abstract Group getGroup(String groupName);
     
     public abstract void saveGroups();
     

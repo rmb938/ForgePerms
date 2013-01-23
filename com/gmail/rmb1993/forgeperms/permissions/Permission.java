@@ -10,7 +10,7 @@ public class Permission {
     private PermissionType defaultType = PermissionType.OP;
     
     public Permission(String permission, PermissionType defaultType) {
-        this.permission = permission;
+        this.permission = permission.toLowerCase();
         this.defaultType = defaultType;
     }
 
