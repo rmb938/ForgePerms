@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms.commands.user;
 
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import net.minecraft.command.ICommandSender;
 
 /**
@@ -8,7 +9,7 @@ import net.minecraft.command.ICommandSender;
  */
 public class UserHelp {
 
-    public UserHelp(ICommandSender sender, String[] args) {
+    public UserHelp(ForgePermsContainer fpc, ICommandSender sender, String[] args) {
         
         sender.sendChatToPlayer("ForgePerms User Command Help");
         sender.sendChatToPlayer("----------");

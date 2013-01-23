@@ -12,18 +12,17 @@ import com.gmail.rmb1993.forgeperms.permissions.group.Track;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import com.google.common.eventbus.EventBus;
 import com.google.common.eventbus.Subscribe;
-import cpw.mods.fml.common.*;
+import cpw.mods.fml.common.DummyModContainer;
+import cpw.mods.fml.common.LoadController;
+import cpw.mods.fml.common.ModMetadata;
 import cpw.mods.fml.common.event.*;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.registry.GameRegistry;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Set;
 import net.minecraft.command.ICommandManager;
 import net.minecraft.command.ServerCommandManager;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.src.ModLoader;
 
 /**
  *
@@ -47,7 +46,6 @@ public class ForgePermsContainer extends DummyModContainer {
         bus.register(this);
         return true;
     }
-    public static ForgePermsContainer instance;
     public Configuration config;
     public HashMap<String, User> users = new HashMap();
     public HashMap<String, Group> groups = new HashMap();
@@ -57,15 +55,14 @@ public class ForgePermsContainer extends DummyModContainer {
 
     @Subscribe
     public void preInit(FMLPreInitializationEvent event) {
-        instance = this;
-        config = new Configuration();
+        config = new Configuration(this);
 
         config.setUpConfig(event.getModConfigurationDirectory());
 
         loadVanillaPerms();
         loadPermissionPerms();
 
-        GameRegistry.registerPlayerTracker(new PlayerTrackerHook());
+        GameRegistry.registerPlayerTracker(new PlayerTrackerHook(this));
     }
 
     @Subscribe
@@ -186,8 +183,8 @@ public class ForgePermsContainer extends DummyModContainer {
     }
 
     public void loadPermissionCommands(ServerCommandManager serverCommandManager) {
-        serverCommandManager.registerCommand(new UserCommand());
-        serverCommandManager.registerCommand(new GroupCommand());
+        serverCommandManager.registerCommand(new UserCommand(this));
+        serverCommandManager.registerCommand(new GroupCommand(this));
     }
 
     @Subscribe

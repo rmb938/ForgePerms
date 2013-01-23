@@ -1,9 +1,8 @@
 package com.gmail.rmb1993.forgeperms.config;
 
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.database.DataBase;
 import com.gmail.rmb1993.forgeperms.database.FlatFileDataBase;
-import com.gmail.rmb1993.forgeperms.database.MySQLDataBase;
-import com.gmail.rmb1993.forgeperms.database.SQLLiteDataBase;
 import java.io.File;
 import net.minecraftforge.common.Property;
 
@@ -13,6 +12,11 @@ public class Configuration {
     private boolean messagePromote;
     private DataBase db;
     private String defaultGroup;
+    private ForgePermsContainer fpc;
+    
+    public Configuration(ForgePermsContainer fpc) {
+        this.fpc = fpc;
+    }
 
     public String getDefaultGroup() {
         return defaultGroup;
@@ -79,7 +83,7 @@ public class Configuration {
         //if (flatFile.getBoolean(true) == true) {
             flatFile.value = "true";
             System.out.println("Using Flat File");
-            db = new FlatFileDataBase(new File(configPath+"/ForgePerm/FlatFile"));
+            db = new FlatFileDataBase(fpc, new File(configPath+"/ForgePerm/FlatFile"));
         //}
 
         config.save();

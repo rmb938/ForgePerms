@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms.database;
 
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 /**
@@ -7,6 +8,10 @@ import com.gmail.rmb1993.forgeperms.permissions.user.User;
  * @author Ryan
  */
 public class MySQLDataBase extends DataBase {
+    
+    public MySQLDataBase(ForgePermsContainer fpc) {
+        super(fpc);
+    }
     
     @Override
     public void loadUsers() {

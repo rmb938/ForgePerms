@@ -11,12 +11,17 @@ import net.minecraft.entity.player.EntityPlayer;
  */
 public class PlayerTrackerHook implements IPlayerTracker {
 
+    private ForgePermsContainer fpc;
+    
+    public PlayerTrackerHook(ForgePermsContainer fpc) {
+        this.fpc = fpc;
+    }
+    
     @Override
     public void onPlayerLogin(EntityPlayer player) {
-        User u = ForgePermsContainer.instance.config.getDb().getUser(player.getEntityName());
+        User u = fpc.config.getDb().getUser(player.getEntityName());
         if (u == null) {
-            ForgePermsContainer.instance.config.getDb().createUser(player.getEntityName());
-            
+            fpc.config.getDb().createUser(player.getEntityName());
         }
     }
 

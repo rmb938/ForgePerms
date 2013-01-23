@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms.commands;
 
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.commands.user.*;
 import net.minecraft.command.CommandBase;
@@ -11,6 +12,13 @@ import net.minecraft.command.ICommandSender;
  */
 public class UserCommand extends CommandBase  {
 
+    private ForgePermsContainer fpc;
+    
+    public UserCommand(ForgePermsContainer fpc) {
+        super();
+        this.fpc = fpc;
+    }
+    
     @Override
     public String getCommandName() {
         return "user";
@@ -26,33 +34,33 @@ public class UserCommand extends CommandBase  {
         if (var2.length >= 1) {
             String command = var2[0];
             if (command.equalsIgnoreCase("promote")) {
-                new Promote(var1, var2);
+                new Promote(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("demote")) {
-                new Demote(var1, var2);
+                new Demote(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("addGroup")) {
-                new AddGroup(var1, var2);
+                new AddGroup(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("removeGroup")) {
-                new RemoveGroup(var1, var2);
+                new RemoveGroup(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("addPerm")) {
-                new AddPerm(var1, var2).user();
+                new AddPerm(fpc, var1, var2).user();
             } else if (command.equalsIgnoreCase("removePerm")) {
-                new RemovePerm(var1, var2).user();
+                new RemovePerm(fpc, var1, var2).user();
             } else if (command.equalsIgnoreCase("setSuffix")) {
-                new SetUserSuffix(var1, var2);
+                new SetUserSuffix(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("removeSuffix")) {
-                new RemoveUserSuffix(var1, var2);
+                new RemoveUserSuffix(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("setPrefix")) {
-                new SetUserPrefix(var1, var2);
+                new SetUserPrefix(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("removePrefix")) {
-                new RemoveUserPrefix(var1,var2);
+                new RemoveUserPrefix(fpc, var1,var2);
             } else if (command.equalsIgnoreCase("listGroups")) {
-                new ListUserGroups(var1, var2);
+                new ListUserGroups(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("listPerms")) {
-                new ListUserPerms(var1, var2);
+                new ListUserPerms(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("listUsers")) {
-                new ListUsers(var1, var2);
+                new ListUsers(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("help")) {
-                new UserHelp(var1, var2);
+                new UserHelp(fpc, var1, var2);
             }
         } else {
             var1.sendChatToPlayer("Usage: /user help");

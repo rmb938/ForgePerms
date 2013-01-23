@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms.database;
 
+import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 
@@ -9,6 +10,12 @@ import com.gmail.rmb1993.forgeperms.permissions.user.User;
  */
 public abstract class DataBase {
 
+    public ForgePermsContainer fpc;
+    
+    public DataBase(ForgePermsContainer fpc) {
+        this.fpc = fpc;
+    }
+    
     public abstract void loadCustomNodes();
     
     public abstract void loadUsers();

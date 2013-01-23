@@ -9,11 +9,11 @@ import net.minecraft.command.ICommandSender;
 
 public class ListUserPerms {
 
-    public ListUserPerms(ICommandSender sender, String[] args) {
+    public ListUserPerms(ForgePermsContainer fpc, ICommandSender sender, String[] args) {
         if (args.length == 2) {
-            User u = ForgePermsContainer.instance.config.getDb().getUser(sender.getCommandSenderName());
+            User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUserPerms")) {
-                User u1 = ForgePermsContainer.instance.config.getDb().getUser(args[1]);
+                User u1 = fpc.config.getDb().getUser(args[1]);
                 if (u1 == null) {
                     sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
                     return;

@@ -23,10 +23,10 @@ public class FlatFileDataBase extends DataBase {
     private File location;
     private boolean global;
 
-    public FlatFileDataBase(File location) {
-        super();
+    public FlatFileDataBase(ForgePermsContainer fpc, File location) {
+        super(fpc);
         this.location = location;
-        Configuration config = ForgePermsContainer.instance.config;
+        Configuration config = fpc.config;
         global = config.isGlobal();
     }
 
@@ -45,7 +45,7 @@ public class FlatFileDataBase extends DataBase {
                 nodes.add("node.example.2");
                 nodes.add("node.example.3");
 
-                ForgePermsContainer.instance.customNodes.put("customNode.example", nodes);
+                fpc.customNodes.put("customNode.example", nodes);
 
                 Yaml yaml = new Yaml();
                 OutputStream output = null;
@@ -55,7 +55,7 @@ public class FlatFileDataBase extends DataBase {
                     Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
                 }
                 OutputStreamWriter osw = new OutputStreamWriter(output);
-                yaml.dump(ForgePermsContainer.instance.customNodes, osw);
+                yaml.dump(fpc.customNodes, osw);
                 try {
                     osw.close();
                     output.close();
@@ -75,7 +75,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
-            ForgePermsContainer.instance.customNodes = (HashMap<String, ArrayList<String>>) yaml.load(input);
+            fpc.customNodes = (HashMap<String, ArrayList<String>>) yaml.load(input);
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Exception encountered attempting YAML parsing of %s", file);
         }
@@ -109,7 +109,7 @@ public class FlatFileDataBase extends DataBase {
             for (Object obj : yaml.loadAll(input)) {
                 User u = (User) obj;
                 System.out.println("Loaded User: " + u.getUserName());
-                ForgePermsContainer.instance.users.put(u.getUserName(), u);
+                fpc.users.put(u.getUserName(), u);
             }
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Exception encountered attempting YAML parsing of %s", file);
@@ -124,7 +124,7 @@ public class FlatFileDataBase extends DataBase {
     @Override
     public void createUser(String userName) {
         userName = userName.toLowerCase();
-        if (ForgePermsContainer.instance.users.containsKey(userName)) {
+        if (fpc.users.containsKey(userName)) {
             System.out.println("User " + userName + " is already in file!");
             return;
         }
@@ -160,8 +160,8 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(output);
-        ForgePermsContainer.instance.users.put(userName, u);
-        yaml.dumpAll(ForgePermsContainer.instance.users.values().iterator(), osw);
+        fpc.users.put(userName, u);
+        yaml.dumpAll(fpc.users.values().iterator(), osw);
         try {
             osw.close();
             output.close();
@@ -173,8 +173,8 @@ public class FlatFileDataBase extends DataBase {
     @Override
     public User getUser(String userName) {
         userName = userName.toLowerCase();
-        if (ForgePermsContainer.instance.users.containsKey(userName)) {
-            return ForgePermsContainer.instance.users.get(userName);
+        if (fpc.users.containsKey(userName)) {
+            return fpc.users.get(userName);
         }
         if (userName.equalsIgnoreCase("server")) {
             User u = new User();
@@ -193,7 +193,7 @@ public class FlatFileDataBase extends DataBase {
     @Override
     public void createGroup(String groupName) {
         groupName = groupName.toLowerCase();
-        if (ForgePermsContainer.instance.groups.containsKey(groupName)) {
+        if (fpc.groups.containsKey(groupName)) {
             System.out.println("Group " + groupName + " is already in file!");
             return;
         }
@@ -209,11 +209,11 @@ public class FlatFileDataBase extends DataBase {
 
         u.setVars(new HashMap<String, String>());
         u.setTrack("default");
-        if (ForgePermsContainer.instance.tracks.containsKey("default") == false) {
-            ForgePermsContainer.instance.tracks.put("default", new Track());
+        if (fpc.tracks.containsKey("default") == false) {
+            fpc.tracks.put("default", new Track());
         }
 
-        Track track = ForgePermsContainer.instance.tracks.get("default");
+        Track track = fpc.tracks.get("default");
         track.addGroup(u);
 
         File file = new File(location + "/groups.yml");
@@ -233,8 +233,8 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(output);
-        ForgePermsContainer.instance.groups.put(groupName, u);
-        yaml.dumpAll(ForgePermsContainer.instance.groups.values().iterator(), osw);
+        fpc.groups.put(groupName, u);
+        yaml.dumpAll(fpc.groups.values().iterator(), osw);
         try {
             osw.close();
             output.close();
@@ -264,13 +264,13 @@ public class FlatFileDataBase extends DataBase {
         try {
             for (Object obj : yaml.loadAll(input)) {
                 Group u = (Group) obj;
-                if (ForgePermsContainer.instance.tracks.containsKey(u.getTrack()) == false) {
-                    ForgePermsContainer.instance.tracks.put(u.getTrack(), new Track());
+                if (fpc.tracks.containsKey(u.getTrack()) == false) {
+                    fpc.tracks.put(u.getTrack(), new Track());
                 }
 
-                Track track = ForgePermsContainer.instance.tracks.get(u.getTrack());
+                Track track = fpc.tracks.get(u.getTrack());
                 track.addGroup(u);
-                ForgePermsContainer.instance.groups.put(u.getGroupName(), u);
+                fpc.groups.put(u.getGroupName(), u);
             }
         } catch (Exception e) {
             FMLLog.log(Level.SEVERE, e, "Exception encountered attempting YAML parsing of %s", file);
@@ -286,8 +286,8 @@ public class FlatFileDataBase extends DataBase {
     @Override
     public Group getGroup(String groupName) {
         groupName = groupName.toLowerCase();
-        if (ForgePermsContainer.instance.groups.containsKey(groupName)) {
-            return ForgePermsContainer.instance.groups.get(groupName);
+        if (fpc.groups.containsKey(groupName)) {
+            return fpc.groups.get(groupName);
         }
         return null;
     }
@@ -295,16 +295,16 @@ public class FlatFileDataBase extends DataBase {
     @Override
     public void removeGroup(String groupName) {
         groupName = groupName.toLowerCase();
-        ForgePermsContainer.instance.groups.remove(groupName);
+        fpc.groups.remove(groupName);
 
-        for (User u : ForgePermsContainer.instance.users.values()) {
+        for (User u : fpc.users.values()) {
             u.getGroups().remove(groupName);
             if (u.getGroups().isEmpty()) {
-                u.getGroups().add(ForgePermsContainer.instance.config.getDefaultGroup());
+                u.getGroups().add(fpc.config.getDefaultGroup());
             }
         }
         saveUsers();
-        for (Group g : ForgePermsContainer.instance.groups.values()) {
+        for (Group g : fpc.groups.values()) {
             g.getInheritance().remove(groupName);
         }
         saveGroups();
@@ -329,7 +329,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(output);
-        yaml.dumpAll(ForgePermsContainer.instance.users.values().iterator(), osw);
+        yaml.dumpAll(fpc.users.values().iterator(), osw);
         try {
             osw.close();
             output.close();
@@ -357,7 +357,7 @@ public class FlatFileDataBase extends DataBase {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
         OutputStreamWriter osw = new OutputStreamWriter(output);
-        yaml.dumpAll(ForgePermsContainer.instance.groups.values().iterator(), osw);
+        yaml.dumpAll(fpc.groups.values().iterator(), osw);
         try {
             osw.close();
             output.close();
