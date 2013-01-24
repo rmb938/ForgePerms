@@ -42,7 +42,7 @@ public class Group {
     }
     
     //Permission, World(TBA)
-    private HashMap<String, String> permissions;
+    private HashMap<String, List<String>> permissions;
     
     //Key, Value
     private HashMap<String, String> vars;
@@ -55,7 +55,7 @@ public class Group {
         this.inheritance = groups;
     }
 
-    public void setPermissions(HashMap<String, String> permissions) {
+    public void setPermissions(HashMap<String, List<String>> permissions) {
         this.permissions = permissions;
     }
 
@@ -70,7 +70,7 @@ public class Group {
         return inheritance;
     }
 
-    public HashMap<String, String> getPermissions() {
+    public HashMap<String, List<String>> getPermissions() {
         return permissions;
     }
 
