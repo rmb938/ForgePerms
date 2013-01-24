@@ -58,6 +58,8 @@ public class GroupCommand extends CommandBase {
                 new RemoveInherit(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("help")) {
                 new GroupHelp(fpc, var1, var2);
+            } else {
+                var1.sendChatToPlayer("Usage: /group help");
             }
         } else {
             var1.sendChatToPlayer("Usage: /group help");

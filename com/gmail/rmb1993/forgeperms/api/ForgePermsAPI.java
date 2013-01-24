@@ -10,11 +10,7 @@ import net.minecraft.src.ModLoader;
 
 public class ForgePermsAPI {
     
-    private static ForgePermsContainer fpc;
-    
-    public ForgePermsAPI(ForgePermsContainer fpc) {
-        ForgePermsAPI.fpc = fpc;
-    }
+    public static ForgePermsContainer fpc;
     
     public static boolean playerHasPermission(String playerName, String permission) {
         permission = permission.toLowerCase();

@@ -51,6 +51,7 @@ public class Configuration {
     }
 
     public void setUpConfig(File configPath) {
+        
         File configFile = new File(configPath+"/ForgePerm/config.cfg");
         net.minecraftforge.common.Configuration config = new net.minecraftforge.common.Configuration(configFile);
 

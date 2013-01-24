@@ -26,6 +26,9 @@ public class FlatFileDataBase extends DataBase {
     public FlatFileDataBase(ForgePermsContainer fpc, File location) {
         super(fpc);
         this.location = location;
+        if (location.exists() == false) {
+            location.mkdirs();
+        }
         Configuration config = fpc.config;
         global = config.isGlobal();
     }
@@ -36,7 +39,7 @@ public class FlatFileDataBase extends DataBase {
         if (file.exists() == false) {
             try {
                 System.out.println("Creating Example Custom Nodes");
-                
+
                 file.createNewFile();
 
                 ArrayList<String> nodes = new ArrayList();
@@ -133,7 +136,7 @@ public class FlatFileDataBase extends DataBase {
         u.setUserName(userName);
 
         u.setCustomPermissions(new HashMap<String, List<String>>());
-        
+
         Group g = new Group();
         g.setGroupName("default");
         u.setGroups(new ArrayList<String>());
@@ -200,7 +203,7 @@ public class FlatFileDataBase extends DataBase {
 
         Group u = new Group();
         u.setGroupName(groupName);
-        
+
         u.setCustomPermissions(new HashMap<String, List<String>>());
 
         u.setInheritance(new ArrayList<String>());

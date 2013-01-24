@@ -1,5 +1,6 @@
 package com.gmail.rmb1993.forgeperms;
 
+import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.commands.GroupCommand;
 import com.gmail.rmb1993.forgeperms.commands.UserCommand;
 import com.gmail.rmb1993.forgeperms.commands.override.*;
@@ -68,7 +69,7 @@ public class ForgePermsContainer extends DummyModContainer {
     @Subscribe
     public void load(FMLInitializationEvent e) {
         System.out.println("Forge Perms Loaded");
-        
+        ForgePermsAPI.fpc = this;
         config.getDb().loadCustomNodes();
         System.out.println("Forge Perms Loaded Custom Nodes");
         config.getDb().loadGroups();

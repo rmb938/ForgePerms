@@ -61,6 +61,8 @@ public class UserCommand extends CommandBase  {
                 new ListUsers(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("help")) {
                 new UserHelp(fpc, var1, var2);
+            } else {
+                var1.sendChatToPlayer("Usage: /user help");
             }
         } else {
             var1.sendChatToPlayer("Usage: /user help");
