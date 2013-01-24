@@ -22,6 +22,7 @@ public class GroupHelp {
         	sender.sendChatToPlayer("----------");
         	
         	sender.sendChatToPlayer("/group add [groupName] - add a group");
+        	sender.sendChatToPlayer("/group addPerm [groupName] [permission]");
         	sender.sendChatToPlayer("/group addInherit [groupName] [inheritGroup] - add group inheritance");
         	sender.sendChatToPlayer("/group listPerms [groupName] - list the group's permissions");
         	sender.sendChatToPlayer("/group listGroups - list all the groups");
