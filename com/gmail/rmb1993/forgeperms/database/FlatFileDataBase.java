@@ -205,7 +205,7 @@ public class FlatFileDataBase extends DataBase {
 
         u.setInheritance(new ArrayList<String>());
 
-        u.setPermissions(new HashMap<String, String>());
+        u.setPermissions(new HashMap<String, List<String>>());
 
         u.setVars(new HashMap<String, String>());
         u.setTrack("default");
