@@ -111,6 +111,21 @@ public class FlatFileDataBase extends DataBase {
         try {
             for (Object obj : yaml.loadAll(input)) {
                 User u = (User) obj;
+                ArrayList<String> groupsToRemove = new ArrayList();
+                for (String group : u.getGroups()) {
+                    Group g = getGroup(group);
+                    if (g == null) {
+                        groupsToRemove.add(group);
+                    }
+                }
+                for (String group : groupsToRemove) {
+                    u.getGroups().remove(group);
+                }
+                if (u.getGroups().isEmpty()) {
+                    Group g = new Group();
+                    g.setGroupName(fpc.config.getDefaultGroup());
+                    u.getGroups().add(g.getGroupName());
+                }
                 System.out.println("Loaded User: " + u.getUserName());
                 fpc.users.put(u.getUserName(), u);
             }
