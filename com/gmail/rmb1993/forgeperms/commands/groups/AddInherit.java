@@ -17,27 +17,25 @@ public class AddInherit {
 
     public AddInherit(ForgePermsContainer fpc, ICommandSender sender, String[] args) {
         if (args.length == 3) {
-        	User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
-        	if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.addInheritGroup")) {
-            	if (fpc.config.getDb().getGroup(args[1]) == null) {
-            		sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
-            		return;
-            	} else {
-            		if (fpc.config.getDb().getGroup(args[2]) == null) {
-            			sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[2] + " does not exist!"));
-            			return;
-            		}
-            		Group g = fpc.config.getDb().getGroup(args[1]);
-            		g.getInheritance().add(args[2]);
-            		fpc.config.getDb().saveGroups();
-            		sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("Group " + args[1] + " now inherits" + args[2] + "!"));
-            	}
-        	} else {
-        		sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
-        	}
+            User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.addInheritGroup")) {
+                if (fpc.config.getDb().getGroup(args[1]) == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
+                    return;
+                }
+                if (fpc.config.getDb().getGroup(args[2]) == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[2] + " does not exist!"));
+                    return;
+                }
+                Group g = fpc.config.getDb().getGroup(args[1]);
+                g.getInheritance().add(args[2]);
+                fpc.config.getDb().saveGroups();
+                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("Group " + args[1] + " now inherits" + args[2] + "!"));
+            } else {
+                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+            }
         } else {
-        	sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group addInherit [groupName] [inheritGroup]"));
+            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group addInherit [groupName] [inheritGroup]"));
         }
     }
-
 }

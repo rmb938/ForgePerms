@@ -19,7 +19,7 @@ public class ListGroupPerms {
                     sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
                     return;
                 }
-                sender.sendChatToPlayer(args[1]+"'s Permissions: ");
+                sender.sendChatToPlayer(args[1] + "'s Permissions: ");
                 for (String perm : g.getPermissions().keySet()) {
                     sender.sendChatToPlayer(perm);
                 }
@@ -30,5 +30,4 @@ public class ListGroupPerms {
             sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group listPerms [groupName]"));
         }
     }
-
 }

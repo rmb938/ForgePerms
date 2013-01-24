@@ -43,24 +43,24 @@ public class AddPerm {
         }
     }
 
-    void group() {
+    public void group() {
         if (args.length == 3) {
-        	User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
-        	if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.addGroupPerm")) {
-        		Group g = fpc.config.getDb().getGroup(args[1]);
-        		ArrayList<String> world = new ArrayList();
-        		world.add("global");
-        		
-        		if (fpc.customNodes.containsKey(args[2])) {
-        			g.getCustomPermissions().put(args[2], world);
-        		} else {
-        			g.getPermissions().put(args[2], world);
-        		}
-        		sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You added the permission " + args[2] + " to group " + args[1]));
-        		fpc.config.getDb().saveGroups();
-        	} else {
-        		sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
-        	}
+            User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.addGroupPerm")) {
+                Group g = fpc.config.getDb().getGroup(args[1]);
+                ArrayList<String> world = new ArrayList();
+                world.add("global");
+
+                if (fpc.customNodes.containsKey(args[2])) {
+                    g.getCustomPermissions().put(args[2], world);
+                } else {
+                    g.getPermissions().put(args[2], world);
+                }
+                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You added the permission " + args[2] + " to group " + args[1]));
+                fpc.config.getDb().saveGroups();
+            } else {
+                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+            }
         }
     }
 }

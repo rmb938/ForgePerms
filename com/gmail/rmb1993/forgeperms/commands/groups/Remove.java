@@ -16,20 +16,19 @@ public class Remove {
 
     public Remove(ForgePermsContainer fpc, ICommandSender sender, String[] args) {
         if (args.length == 2) {
-        	User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
-        	if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.removeGroup")) {
-        		if (fpc.config.getDb().getGroup(args[1]) == null) {
-        			sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
-        			return;
-        		}
-            	fpc.config.getDb().removeGroup(args[1]);
-            	sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You removed the group " + args[1]));
-        	} else {
-        		sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
-        	}
+            User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.removeGroup")) {
+                if (fpc.config.getDb().getGroup(args[1]) == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
+                    return;
+                }
+                fpc.config.getDb().removeGroup(args[1]);
+                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You removed the group " + args[1]));
+            } else {
+                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+            }
         } else {
-        	sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group remove [groupName]"));
+            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group remove [groupName]"));
         }
     }
-
 }

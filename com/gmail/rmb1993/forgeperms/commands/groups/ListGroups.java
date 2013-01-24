@@ -9,7 +9,7 @@ import com.gmail.rmb1993.forgeperms.utils.StringColors;
 import net.minecraft.command.ICommandSender;
 
 /**
- * 
+ *
  * @author Favorlock
  *
  */
@@ -26,5 +26,4 @@ public class ListGroups {
             sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
         }
     }
-
 }

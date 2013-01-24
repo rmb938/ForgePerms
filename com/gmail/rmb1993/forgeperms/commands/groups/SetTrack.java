@@ -17,23 +17,22 @@ public class SetTrack {
 
     public SetTrack(ForgePermsContainer fpc, ICommandSender sender, String[] args) {
         if (args.length == 3) {
-        	User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
-        	if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.groupTrack")) {
-        		Group g = fpc.config.getDb().getGroup(args[1]);
-        		if (g == null) {
-        			sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
-        			return;
-        		}
-        		g.setTrack(args[2]);
-        		fpc.config.getDb().saveGroups();
-        		sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You set the track of group " + args[1]
-        																					+ " to " + args[2]));
-        	} else {
-        		sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
-        	}
+            User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
+            if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.groupTrack")) {
+                Group g = fpc.config.getDb().getGroup(args[1]);
+                if (g == null) {
+                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
+                    return;
+                }
+                g.setTrack(args[2]);
+                fpc.config.getDb().saveGroups();
+                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You set the track of group " + args[1]
+                        + " to " + args[2]));
+            } else {
+                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+            }
         } else {
-        	sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group setTrack [groupName] [track]"));
+            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group setTrack [groupName] [track]"));
         }
     }
-
 }

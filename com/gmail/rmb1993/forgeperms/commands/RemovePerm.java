@@ -37,7 +37,7 @@ public class RemovePerm {
         }
     }
 
-    void group() {
+    public void group() {
         throw new UnsupportedOperationException("Not yet implemented");
     }
 
