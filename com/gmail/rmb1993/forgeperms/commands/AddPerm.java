@@ -30,10 +30,10 @@ public class AddPerm {
                 ArrayList<String> world = new ArrayList();
                 world.add("global");
 
-                if (fpc.customNodes.containsKey(args[2])) {
-                    u1.getCustomPermissions().put(args[2], world);
+                if (fpc.customNodes.containsKey(args[2].toLowerCase())) {
+                    u1.getCustomPermissions().put(args[2].toLowerCase(), world);
                 } else {
-                    u1.getPermissions().put(args[2], world);
+                    u1.getPermissions().put(args[2].toLowerCase(), world);
                 }
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You added the permission " + args[2] + " to user " + args[1]));
                 fpc.config.getDb().saveUsers();
@@ -51,10 +51,10 @@ public class AddPerm {
                 ArrayList<String> world = new ArrayList();
                 world.add("global");
 
-                if (fpc.customNodes.containsKey(args[2])) {
-                    g.getCustomPermissions().put(args[2], world);
+                if (fpc.customNodes.containsKey(args[2].toLowerCase())) {
+                    g.getCustomPermissions().put(args[2].toLowerCase(), world);
                 } else {
-                    g.getPermissions().put(args[2], world);
+                    g.getPermissions().put(args[2].toLowerCase(), world);
                 }
                 sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You added the permission " + args[2] + " to group " + args[1]));
                 fpc.config.getDb().saveGroups();

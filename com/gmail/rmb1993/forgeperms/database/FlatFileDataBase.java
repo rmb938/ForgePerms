@@ -138,7 +138,7 @@ public class FlatFileDataBase extends DataBase {
         u.setCustomPermissions(new HashMap<String, List<String>>());
 
         Group g = new Group();
-        g.setGroupName("default");
+        g.setGroupName(fpc.config.getDefaultGroup());
         u.setGroups(new ArrayList<String>());
         u.getGroups().add(g.getGroupName());
         u.setPermissions(new HashMap<String, List<String>>());
