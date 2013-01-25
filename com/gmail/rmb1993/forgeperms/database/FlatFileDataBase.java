@@ -12,7 +12,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Representer;
 
 /**
  *
@@ -99,8 +102,11 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-
-        Yaml yaml = new Yaml();
+        Representer representer = new Representer();
+        representer.addClassTag(User.class, new Tag("!user"));
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        Yaml yaml = new Yaml(representer, options);
 
         InputStream input = null;
         try {
@@ -137,6 +143,8 @@ public class FlatFileDataBase extends DataBase {
         } catch (IOException ex) {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
+        
+        saveUsers();
     }
 
     @Override
@@ -170,7 +178,12 @@ public class FlatFileDataBase extends DataBase {
             }
         }
 
-        Yaml yaml = new Yaml();
+        Representer representer = new Representer();
+        representer.addClassTag(User.class, new Tag("!user"));
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        Yaml yaml = new Yaml(representer, options);
+
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);
@@ -243,7 +256,11 @@ public class FlatFileDataBase extends DataBase {
             }
         }
 
-        Yaml yaml = new Yaml();
+        Representer representer = new Representer();
+        representer.addClassTag(Group.class, new Tag("!group"));
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        Yaml yaml = new Yaml(representer, options);
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);
@@ -271,7 +288,11 @@ public class FlatFileDataBase extends DataBase {
                 Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        Yaml yaml = new Yaml();
+        Representer representer = new Representer();
+        representer.addClassTag(Group.class, new Tag("!group"));
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        Yaml yaml = new Yaml(representer, options);
         InputStream input = null;
         try {
             input = new FileInputStream(file);
@@ -285,7 +306,6 @@ public class FlatFileDataBase extends DataBase {
                 if (fpc.tracks.containsKey(u.getTrack()) == false) {
                     fpc.tracks.put(u.getTrack(), new Track());
                 }
-
                 Track track = fpc.tracks.get(u.getTrack());
                 track.addGroup(u);
                 fpc.groups.put(u.getGroupName(), u);
@@ -299,6 +319,19 @@ public class FlatFileDataBase extends DataBase {
         } catch (IOException ex) {
             Logger.getLogger(FlatFileDataBase.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        for (Group g : fpc.groups.values()) {
+            ArrayList<String> groupsToRemove = new ArrayList();
+            for (String group : g.getInheritance()) {
+                if (g == null) {
+                    groupsToRemove.add(group);
+                }
+            }
+            for (String group : groupsToRemove) {
+                g.getInheritance().remove(group);
+            }
+        }
+        saveGroups();
     }
 
     @Override
@@ -339,7 +372,11 @@ public class FlatFileDataBase extends DataBase {
             }
         }
 
-        Yaml yaml = new Yaml();
+        Representer representer = new Representer();
+        representer.addClassTag(User.class, new Tag("!user"));
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        Yaml yaml = new Yaml(representer, options);
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);
@@ -367,7 +404,11 @@ public class FlatFileDataBase extends DataBase {
             }
         }
 
-        Yaml yaml = new Yaml();
+        Representer representer = new Representer();
+        representer.addClassTag(Group.class, new Tag("!group"));
+        DumperOptions options = new DumperOptions();
+        options.setExplicitStart(true);
+        Yaml yaml = new Yaml(representer, options);
         OutputStream output = null;
         try {
             output = new FileOutputStream(file);

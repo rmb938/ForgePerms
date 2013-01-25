@@ -29,8 +29,8 @@ public class AddPerm {
                 ArrayList<String> world = new ArrayList();
                 world.add("global");
 
-                if (fpc.customNodes.containsKey(args[2].toLowerCase())) {
-                    u1.getCustomPermissions().put(args[2].toLowerCase(), world);
+                if (fpc.customNodes.containsKey(args[2])) {
+                    u1.getCustomPermissions().put(args[2], world);
                 } else {
                     u1.getPermissions().put(args[2].toLowerCase(), world);
                 }

@@ -13,7 +13,6 @@ public class ForgePermsAPI {
     public static ForgePermsContainer fpc;
     
     public static boolean playerHasPermission(String playerName, String permission) {
-        permission = permission.toLowerCase();
         if (playerName.equalsIgnoreCase("server")) {
             return true;
         }
@@ -79,7 +78,6 @@ public class ForgePermsAPI {
     }
 
     private static boolean groupHasPermission(String groupName, String permission, boolean checkInherits) {
-        permission = permission.toLowerCase();
         Group g = fpc.config.getDb().getGroup(groupName);
         
         for (String cNode : g.getCustomPermissions().keySet()) {
