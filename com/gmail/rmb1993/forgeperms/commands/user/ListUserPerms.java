@@ -4,7 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 public class ListUserPerms {
@@ -15,7 +15,7 @@ public class ListUserPerms {
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listUserPerms")) {
                 User u1 = fpc.config.getDb().getUser(args[1]);
                 if (u1 == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the user "+args[1]+" does not exist!");
                     return;
                 }
                 sender.sendChatToPlayer(args[1]+"'s Permissions: ");
@@ -23,10 +23,10 @@ public class ListUserPerms {
                     sender.sendChatToPlayer(perm);
                 }
             } else {
-                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+                sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /user listPerms [userName]"));
+            sender.sendChatToPlayer(FontColour.RED + "Usage: /user listPerms [userName]");
         }
     }
     

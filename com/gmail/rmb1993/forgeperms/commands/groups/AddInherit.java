@@ -4,8 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
-
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 /**
@@ -20,22 +19,22 @@ public class AddInherit {
             User u = fpc.config.getDb().getUser(sender.getCommandSenderName());
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.addInheritGroup")) {
                 if (fpc.config.getDb().getGroup(args[1]) == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the group " + args[1] + " does not exist!");
                     return;
                 }
                 if (fpc.config.getDb().getGroup(args[2]) == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[2] + " does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the group " + args[2] + " does not exist!");
                     return;
                 }
                 Group g = fpc.config.getDb().getGroup(args[1]);
                 g.getInheritance().add(args[2]);
                 fpc.config.getDb().saveGroups();
-                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("Group " + args[1] + " now inherits" + args[2] + "!"));
+                sender.sendChatToPlayer(FontColour.DARK_GREEN + "Group " + args[1] + " now inherits" + args[2] + "!");
             } else {
-                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+                sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group addInherit [groupName] [inheritGroup]"));
+            sender.sendChatToPlayer(FontColour.RED + "Usage: /group addInherit [groupName] [inheritGroup]");
         }
     }
 }

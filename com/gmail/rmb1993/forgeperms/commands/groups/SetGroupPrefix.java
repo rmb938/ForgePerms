@@ -4,8 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
-
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 /**
@@ -21,18 +20,18 @@ public class SetGroupPrefix {
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permission.groupPrefix")) {
                 Group g = fpc.config.getDb().getGroup(args[1]);
                 if (g == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the group " + args[1] + " does not exist!");
                     return;
                 }
                 g.getVars().put("prefix", args[2]);
                 fpc.config.getDb().saveGroups();
-                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You set the prefix of group " + args[1]
-                        + " to " + args[2]));
+                sender.sendChatToPlayer(FontColour.DARK_GREEN + "You set the prefix of group " + args[1]
+                        + " to " + args[2]);
             } else {
-                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+                sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group setPrefix [groupName] [prefix]"));
+            sender.sendChatToPlayer(FontColour.RED + "Usage: /group setPrefix [groupName] [prefix]");
         }
     }
 }

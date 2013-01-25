@@ -3,8 +3,7 @@ package com.gmail.rmb1993.forgeperms.commands.groups;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
-
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 /**
@@ -35,7 +34,7 @@ public class GroupHelp {
             sender.sendChatToPlayer("/group setRank [groupName] [rank] - set a group's rank");
             sender.sendChatToPlayer("/group setTrack [groupName] [track] - set a group's track");
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+            sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
         }
     }
 }

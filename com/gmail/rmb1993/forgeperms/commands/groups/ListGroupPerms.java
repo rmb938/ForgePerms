@@ -4,8 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
-
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 public class ListGroupPerms {
@@ -16,7 +15,7 @@ public class ListGroupPerms {
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.listGroupPerms")) {
                 Group g = fpc.config.getDb().getGroup(args[1]);
                 if (g == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group " + args[1] + " does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the group " + args[1] + " does not exist!");
                     return;
                 }
                 sender.sendChatToPlayer(args[1] + "'s Permissions: ");
@@ -24,10 +23,10 @@ public class ListGroupPerms {
                     sender.sendChatToPlayer(perm);
                 }
             } else {
-                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+                sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /group listPerms [groupName]"));
+            sender.sendChatToPlayer(FontColour.RED + "Usage: /group listPerms [groupName]");
         }
     }
 }

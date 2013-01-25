@@ -4,7 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 /**
@@ -19,26 +19,26 @@ public class AddGroup {
             if (ForgePermsAPI.playerHasPermission(u.getUserName(), "permissions.addUserGroup")) {
                 User u1 = fpc.config.getDb().getUser(args[1]);
                 if (u1 == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the user "+args[1]+" does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the user "+args[1]+" does not exist!");
                     return;
                 }
                 Group g = fpc.config.getDb().getGroup(args[2]);
                 if (g == null) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Sorry the group "+args[2]+" does not exist!"));
+                    sender.sendChatToPlayer(FontColour.RED + "Sorry the group "+args[2]+" does not exist!");
                     return;
                 }
                 if (u1.getGroups().contains(g.getGroupName())) {
-                    sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("User "+args[1]+" is already in group "+args[2]));
+                    sender.sendChatToPlayer(FontColour.RED + "User "+args[1]+" is already in group "+args[2]);
                     return;
                 }
                 u1.getGroups().add(g.getGroupName());
                 fpc.config.getDb().saveUsers();
-                sender.sendChatToPlayer(StringColors.EnumTextColor.DARK_GREEN.colorString("You added "+args[1]+" to group "+args[2]));
+                sender.sendChatToPlayer(FontColour.DARK_GREEN + "You added "+args[1]+" to group "+args[2]);
             } else {
-                sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+                sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("Usage: /user addGroup [userName] [groupName]"));
+            sender.sendChatToPlayer(FontColour.RED + "Usage: /user addGroup [userName] [groupName]");
         }
     }
 }

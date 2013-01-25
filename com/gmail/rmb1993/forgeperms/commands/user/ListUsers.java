@@ -4,7 +4,7 @@ import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
-import com.gmail.rmb1993.forgeperms.utils.StringColors;
+import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
 
 public class ListUsers {
@@ -17,7 +17,7 @@ public class ListUsers {
                 sender.sendChatToPlayer(u1.getUserName());
             }
         } else {
-            sender.sendChatToPlayer(StringColors.EnumTextColor.RED.colorString("You do not have permission to use this command."));
+            sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
         }
     }
 }
