@@ -1,5 +1,7 @@
 package com.gmail.rmb1993.forgeperms.commands.user;
 
+import java.util.ArrayList;
+
 import com.gmail.rmb1993.forgeperms.ForgePermsPlugin;
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
@@ -7,6 +9,9 @@ import com.gmail.rmb1993.forgeperms.permissions.group.Group;
 import com.gmail.rmb1993.forgeperms.permissions.user.User;
 import com.gmail.rmb1993.forgeperms.utils.FontColour;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.src.ModLoader;
+import net.minecraft.world.WorldServer;
 
 /**
  *
@@ -35,6 +40,18 @@ public class RemoveGroup {
                 u1.getGroups().remove(g.getGroupName());
                 fpc.config.getDb().saveUsers();
                 sender.sendChatToPlayer(FontColour.DARK_GREEN + "You removed "+args[1]+" from group "+args[2]);
+                
+                if (fpc.config.isMessagePromote() == true) {
+                	ArrayList<EntityPlayerMP> players = new ArrayList();
+                	for (WorldServer ws : ModLoader.getMinecraftServerInstance().worldServers) {
+                		players.addAll(ws.playerEntities);
+                	}
+            		for (EntityPlayerMP epmp : players) {
+            			if (epmp.username.equalsIgnoreCase(u1.getUserName())) {
+            				epmp.sendChatToPlayer("You have been removed from group " + args[2]);
+            			}
+            		}
+                }
             } else {
                 sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
             }

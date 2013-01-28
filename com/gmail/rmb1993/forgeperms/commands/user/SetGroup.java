@@ -1,6 +1,11 @@
 package com.gmail.rmb1993.forgeperms.commands.user;
 
+import java.util.ArrayList;
+
 import net.minecraft.command.ICommandSender;
+import net.minecraft.entity.player.EntityPlayerMP;
+import net.minecraft.src.ModLoader;
+import net.minecraft.world.WorldServer;
 
 import com.gmail.rmb1993.forgeperms.ForgePermsContainer;
 import com.gmail.rmb1993.forgeperms.api.ForgePermsAPI;
@@ -29,6 +34,18 @@ public class SetGroup {
 					u1.getGroups().add(g.getGroupName());
 					fpc.config.getDb().saveUsers();
 					sender.sendChatToPlayer(FontColour.DARK_GREEN + "You set " + args[1] + "'s group to " + args[2]);
+					
+	                if (fpc.config.isMessagePromote() == true) {
+	                	ArrayList<EntityPlayerMP> players = new ArrayList();
+	                	for (WorldServer ws : ModLoader.getMinecraftServerInstance().worldServers) {
+	                		players.addAll(ws.playerEntities);
+	                	}
+                		for (EntityPlayerMP epmp : players) {
+                			if (epmp.username.equalsIgnoreCase(u1.getUserName())) {
+                				epmp.sendChatToPlayer("Your group has been set to " + args[2]);
+                			}
+                		}
+	                }
 				}
 			} else {
 				sender.sendChatToPlayer(FontColour.RED + "You do not have permission to use this command.");
