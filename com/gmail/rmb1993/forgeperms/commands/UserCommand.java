@@ -41,6 +41,8 @@ public class UserCommand extends CommandBase  {
                 new AddGroup(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("removeGroup")) {
                 new RemoveGroup(fpc, var1, var2);
+            } else if (command.equalsIgnoreCase("setGroup")) {
+            	new SetGroup(fpc, var1, var2);
             } else if (command.equalsIgnoreCase("addPerm")) {
                 new AddPerm(fpc, var1, var2).user();
             } else if (command.equalsIgnoreCase("removePerm")) {

@@ -135,7 +135,21 @@ public class ForgePermsContainer extends DummyModContainer {
         permissions.put("permissions.removeUserGroup", new Permission("permissions.removeUserGroup", PermissionType.OP));
         permissions.put("permissions.userSuffix", new Permission("permissions.userSuffix", PermissionType.OP));
         permissions.put("permissions.userPrefix", new Permission("permissions.userPrefix", PermissionType.OP));
+        permissions.put("permissions.setGroup", new Permission("permissions.setGroup", PermissionType.OP));
         /*Group Perms*/
+        permissions.put("permissions.addGroup", new Permission("permissions.addGroup", PermissionType.OP));
+        permissions.put("permissions.addInheritGroup", new Permission("permissions.addInheritGroup", PermissionType.OP));
+        permissions.put("permissions.helpGroup", new Permission("permissions.helpGroup", PermissionType.OP));
+        permissions.put("permissions.listGroupPerms", new Permission("permissions.listGroupPerms", PermissionType.OP));
+        permissions.put("permissions.listGroups", new Permission("permissions.listGroups", PermissionType.OP));
+        permissions.put("permissions.removeGroup", new Permission("permissions.removeGroup", PermissionType.OP));
+        permissions.put("permissions.groupPrefix", new Permission("permissions.groupPrefix", PermissionType.OP));
+        permissions.put("permissions.groupSuffix", new Permission("permissions.groupSuffix", PermissionType.OP));
+        permissions.put("permissions.removeInheritGroup", new Permission("permissions.removeInheritGroup", PermissionType.OP));
+        permissions.put("permissions.groupRank", new Permission("permissions.groupRank", PermissionType.OP));
+        permissions.put("permissions.groupTrack", new Permission("permissions.groupTrack", PermissionType.OP));
+        /*General Perms*/
+        permissions.put("permissions.help", new Permission("permissions.help", PermissionType.OP));
     }
 
     @Subscribe
