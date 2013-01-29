@@ -14,6 +14,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.Constructor;
 import org.yaml.snakeyaml.nodes.Tag;
 import org.yaml.snakeyaml.representer.Representer;
 
@@ -103,10 +104,11 @@ public class FlatFileDataBase extends DataBase {
             }
         }
         Representer representer = new Representer();
+        Constructor constructor = new Constructor(User.class);
         representer.addClassTag(User.class, new Tag("!user"));
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        Yaml yaml = new Yaml(representer, options);
+        Yaml yaml = new Yaml(constructor, representer, options);
 
         InputStream input = null;
         try {
@@ -289,10 +291,11 @@ public class FlatFileDataBase extends DataBase {
             }
         }
         Representer representer = new Representer();
+        Constructor constructor = new Constructor(Group.class);
         representer.addClassTag(Group.class, new Tag("!group"));
         DumperOptions options = new DumperOptions();
         options.setExplicitStart(true);
-        Yaml yaml = new Yaml(representer, options);
+        Yaml yaml = new Yaml(constructor, representer, options);
         InputStream input = null;
         try {
             input = new FileInputStream(file);
