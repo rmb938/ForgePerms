@@ -6,7 +6,7 @@ package com.gmail.rmb1993.forgeperms.permissions;
  */
 public enum PermissionType {
 
-    CONSOLE(0),OP(1),USER(2);
+    CONSOLE(0),OP(1);
     
     int type;
     

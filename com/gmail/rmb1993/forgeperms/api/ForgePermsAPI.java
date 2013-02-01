@@ -26,22 +26,6 @@ public class ForgePermsAPI {
                 if (ModLoader.getMinecraftServerInstance().getConfigurationManager().getOps().contains(playerName) == true) {
                     return true;
                 }
-            } else if (perm.getDefaultType() == PermissionType.USER) {
-                if (u.getPermissions().containsKey("^" + permission) == true) {
-                    return false;
-                } else {
-                    Group highestRank = fpc.config.getDb().getGroup(u.getGroups().get(0));
-                    for (String gN : u.getGroups()) {
-                        Group g = fpc.config.getDb().getGroup(gN);
-                        if (g.getRank() > highestRank.getRank()) {
-                            highestRank = g;
-                        }
-                    }
-                    if (groupHasPermission(highestRank.getGroupName(), "^" + permission, false) == true) {
-                        return false;
-                    }
-                }
-                return true;
             }
         }
         
@@ -50,6 +34,8 @@ public class ForgePermsAPI {
             for (String node : nodes) {
                 if (node.equalsIgnoreCase(permission)) {
                     return true;
+                } else if (node.equalsIgnoreCase("^"+permission)) {
+                    return false;
                 }
             }
         }
